@@ -2,7 +2,7 @@ import java.awt.event.*;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 
-public class Keyboard extends JPanel implements KeyListener{
+public class Keyboard extends JPanel {
 
 	public Keyboard(){
 
@@ -10,7 +10,19 @@ public class Keyboard extends JPanel implements KeyListener{
 		frame.add(this);
 		frame.setVisible(true);
 		setFocusable(true);
-		addKeyListener(this);
+		addKeyListener( new KeyListener(){
+
+			public void keyPressed(KeyEvent e){
+				System.out.println(e.getKeyChar());
+			}
+			public void keyReleased(KeyEvent e){
+
+			}
+			public void keyTyped(KeyEvent e){
+
+			}
+
+		});
 	}
 
 	public static void main(String[]args){
@@ -19,16 +31,7 @@ public class Keyboard extends JPanel implements KeyListener{
 
 	}
 
-	public void keyPressed(KeyEvent e){
 
-		System.out.println(e.getKeyChar());
-	}
-	public void keyReleased(KeyEvent e){
-
-	}
-	public void keyTyped(KeyEvent e){
-
-	}
 
 
 }
