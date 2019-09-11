@@ -30,11 +30,9 @@ public class Mousetracker extends JPanel{
 		public void mouseExited(MouseEvent e){}
 		public void mouseEntered(MouseEvent e){}
 		public void mouseReleased(MouseEvent e){
-			end = e.getX();
 		}
 		public void mousePressed(MouseEvent e){}
 		public void mouseClicked(MouseEvent e){
-			initial = e.getX();
 		}
 		public void mouseMoved(MouseEvent e){}
 		public void mouseDragged(MouseEvent e){

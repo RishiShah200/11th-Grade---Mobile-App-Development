@@ -11,7 +11,7 @@ public class KeyboardDemo2 extends JPanel {
 		frame.setVisible(true);
 		setFocusable(true);
 
-		MouseListener key = new KeyboardInterface();
+		KeyListener key = new KeyboardInterface();
 		addKeyListener(key);
 	}
 
