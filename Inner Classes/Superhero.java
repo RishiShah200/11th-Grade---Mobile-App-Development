@@ -11,8 +11,8 @@ public class Superhero{
 		System.out.println(first);
 
 
-		SuperheroRelated.Quickness ability = new SuperheroRelated.Quickness();
-		System.out.println(ability);
+		SuperheroRelated.Quickness quick = new SuperheroRelated.Quickness();
+		System.out.println(quick);
 
 		ArrayList<Hero> list = new ArrayList<Hero>();
 		for(int i = 0; i < 5;i++){
@@ -23,8 +23,20 @@ public class Superhero{
 			list.get(x).attacked();
 			list.get(x).isVulnerable();
 		}
-		//add sorting algorithm
+		//add sorting algorithm - Selection  sort
+		for(int x = 0;x<list.size()-1;x++){
+			int min = x;
+			for(int j = x;j<list.size();j++){
+				if(list.get(j).compareTo(list.get(min)) < 0)
+					min = j;
+			}
+			Hero temp = list.get(x);
+			list.set(x,list.get(min));
+			list.set(min,temp);
+		}
 
+		for(int x = 0;x<list.size();x++)
+			System.out.println(list.get(x));
 
 	}
 
@@ -79,7 +91,7 @@ public class Superhero{
 			else if(hp < obj.getHP())
 				return -1;
 			else
-				return 0;
+				return getName().compareTo(obj.getName());
 		}
 
 	}
