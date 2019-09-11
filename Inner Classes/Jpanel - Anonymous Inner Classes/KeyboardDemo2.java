@@ -10,7 +10,9 @@ public class KeyboardDemo2 extends JPanel {
 		frame.add(this);
 		frame.setVisible(true);
 		setFocusable(true);
-		addKeyListener(new KeyboardInterface());
+
+		KeyListener key = new KeyboardInterface();
+		addKeyListener(key);
 	}
 
 	public static void main(String[]args){
