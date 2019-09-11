@@ -10,19 +10,7 @@ public class KeyboardDemo2 extends JPanel {
 		frame.add(this);
 		frame.setVisible(true);
 		setFocusable(true);
-		addKeyListener( new KeyListener(){
-
-			public void keyPressed(KeyEvent e){
-				System.out.println(e.getKeyChar());
-			}
-			public void keyReleased(KeyEvent e){
-
-			}
-			public void keyTyped(KeyEvent e){
-
-			}
-
-		});
+		addKeyListener();
 	}
 
 	public static void main(String[]args){
@@ -32,6 +20,14 @@ public class KeyboardDemo2 extends JPanel {
 	}
 
 
-//this uses anonymous inner classes
+	public class KeyboardInterface implements KeyListener{
+
+			public void keyPressed(KeyEvent e){
+				System.out.println(e.getKeyChar());
+			}
+			public void keyReleased(KeyEvent e){}
+			public void keyTyped(KeyEvent e){}
+
+	}
 
 }
