@@ -9,6 +9,7 @@ public class Mousetracker extends JPanel{
 	double total = 0.0;
 	int initX, initY, newX, newY;
 
+
 	public Mousetracker(double pix, double in){
 
 		JFrame frame = new JFrame();
@@ -37,7 +38,38 @@ public class Mousetracker extends JPanel{
 
 		});
 
+		addKeyListener(new KeyAdapter(){
+
+			String choice = " ";
+
+			public void keyTyped(KeyEvent e){
+				char in = e.getKeyChar();
+				if("aeiouAEUOI".contains(""+in)){
+					choice = "Vowel";
+					System.out.println("The string you typed is a "+choice);
+
+				}
+				else if("qwrtypsdfghjklzxcvbnmQWRTYPSDFGHJKLZXCVBNM".contains(""+in)){
+					choice = "Consonant";
+					System.out.println("The string you typed is a "+choice);
+				}
+				else{
+					choice = "You have made a mistake";
+					System.out.println("The string you typed is a "+choice);
+				}
+
+					//System.out.println("The string you types is a "+choice);
+			}
+
+
+		});
+
+
+
 	}
+
+
+
 
 
 	public static void main(String[]args){
