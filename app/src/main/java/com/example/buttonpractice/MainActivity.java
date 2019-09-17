@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button button;
     Button button2;
+    int cnt = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +29,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void swapText (View view){
-        button2.setText("Wohooo!!");
+        cnt++;
+       if(cnt%2==0){
+           button.setText("not Color");
+           button2.setText("Color");
+       }
+       else{
+           button.setText("Color");
+           button2.setText("not Color");
+       }
     }
 }
