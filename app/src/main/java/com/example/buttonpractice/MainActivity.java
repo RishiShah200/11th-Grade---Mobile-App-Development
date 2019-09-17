@@ -29,14 +29,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void swapText (View view){
-        cnt++;
-       if(cnt%2==0){
-           button.setText("not Color");
-           button2.setText("Color");
-       }
-       else{
-           button.setText("Color");
-           button2.setText("not Color");
-       }
+        String swap = (String)button.getText();
+        String swap2 = (String)button2.getText();
+        button.setText(swap2);
+        button2.setText(swap);
     }
 }
