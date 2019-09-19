@@ -46,10 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void swapText(View view){
-        String a = (String)(button.getText());
-        String b = (String)(swap.getText());
-        button.setText(b);
+    public void onClick(View view){
+        CharSequence a = button.getText();
+        button.setText(swap.getText());
         swap.setText(a);
     }
 
