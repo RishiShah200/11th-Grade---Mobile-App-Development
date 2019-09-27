@@ -25,11 +25,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        a = findViewById(R.id.id_button3);  //topleft button
+        a = findViewById(R.id.id_button);  //topleft button
         b = findViewById(R.id.id_button2); //topright button
         c = findViewById(R.id.id_button4); //bottomleft button
-        d = findViewById(R.id.id_button8); //bottom right button
-        e = findViewById(R.id.id_button);   //center button
+        d = findViewById(R.id.id_button3); //bottom right button
+        e = findViewById(R.id.id_button5);   //center button
         v = findViewById(R.id.id_textView6);
         w = findViewById(R.id.id_textView2);
         x = findViewById(R.id.id_textView8);
