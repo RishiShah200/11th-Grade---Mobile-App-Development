@@ -1,0 +1,33 @@
+/******************************************************************************
+
+Welcome to GDB Online.
+GDB online is an online compiler and debugger tool for C, C++, Python, Java, PHP, Ruby, Perl,
+C#, VB, Swift, Pascal, Fortran, Haskell, Objective-C, Assembly, HTML, CSS, JS, SQLite, Prolog.
+Code, Compile, Run and Debug online from anywhere in world.
+
+*******************************************************************************/
+import java.util.StringTokenizer;
+
+
+public class Main
+{
+	public static void main(String[] args) {
+		test1();
+	}
+	
+	public static void test1(){
+	    
+	    try{        //anything in the try block is tested and if there is an error it goes to catch and prints what is in the error.
+    	    int x = 10;
+    	    int y = 0;
+    	    int z = x/y;
+	        System.out.println(z);
+	    }catch(ArithmeticException e){      //exception is most general/broad type. Use more specific
+	        System.out.println("Error");
+	        e.printStackTrace();
+	    }finally{
+	        System.out.println("one last thing...");
+	    }
+	}
+	
+}
