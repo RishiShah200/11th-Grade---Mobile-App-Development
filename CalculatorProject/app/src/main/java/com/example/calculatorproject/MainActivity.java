@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView output;
     String temp = "";
     String delim = "+-*/";
+    int total;
     ArrayList<String> list = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,26 +77,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
         public void onClick(View v){
-            String a = (String)((Button)v).getText();
-            temp+=a;
-            output.setText(temp);
-            if(((Button)v).getText().equals("=")){
-                StringTokenizer tokenizer = new StringTokenizer(temp,delim,true);
-                while(tokenizer.hasMoreTokens()){		//return boolean
+
+        try {
+            if (!(((Button) v).getText().equals("="))&&!(((Button) v).getText().equals("C"))) {
+                String a = (String) ((Button) v).getText();
+                temp += a;
+                output.setText(temp);
+            }
+
+            if (((Button) v).getText().equals("=")) {
+                StringTokenizer tokenizer = new StringTokenizer(temp, delim, true);
+                while (tokenizer.hasMoreTokens()) {        //return boolean
                     String currentWord = tokenizer.nextToken();
                     list.add(currentWord);
                 }
+                for (int x = 0; x < list.size(); x++) {
+                   /* if(list.get(x).equals("*")){
+
+                    }*/
+                  /*  if(list.get(x).equals("/")){
+
+                    }*/
+                    if (list.get(x).equals("+")) {
+                        String before = list.get(x - 1);
+                        String after = list.get(x + 1);
+                        int temp = Integer.parseInt(before);
+                        int temp2 = Integer.parseInt(after);
+                        total = temp + temp2;
+
+                    }
+                  /*  if(list.get(x).equals("-")){
+
+                    }*/
+                    /*list.remove(x);
+                    list.remove(x - 1);
+                    list.remove(x);*/
+                }
+                output.setText("" + total);
 
             }
 
 
-
-            if(((Button)v).getText().equals("C")){
+            if (((Button) v).getText().equals("C")) {
                 output.setText("");
-                temp = "";
+                    while (list.size() > 0) {
+                        for (int x = 0; x < list.size(); x++) {
+                            list.remove(x);
+                        }
+                        temp = "";
+                        total = 0;
+                    }
             }
 
-
+        }catch(Exception e){
+            output.setText(e+"Something has gone terribly wrong");
+        }
 
         }
 }
