@@ -14,7 +14,7 @@
         android:gravity="right|center_vertical"
         android:onClick="onClick"
         android:text="Output"
-        android:textSize="40dp" />
+        android:textSize="60dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -181,5 +181,12 @@
             android:textSize="20dp" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/id_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:text="TextView" />
 
 </LinearLayout>

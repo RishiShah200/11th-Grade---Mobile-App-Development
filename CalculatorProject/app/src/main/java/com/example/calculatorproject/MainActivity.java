@@ -3,12 +3,14 @@ package com.example.calculatorproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.*;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -30,10 +32,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button multiply;
     Button divide;
     TextView output;
+    TextView test;
     String temp = "";
     String delim = "+-*/";
+    int multpos;
+    int divpos;
+    int addpos;
+    int subpos;
+
     int total;
     ArrayList<String> list = new ArrayList<String>();
+
+    Vibrator vibrator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,11 +83,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         divide.setOnClickListener(this);
         output = findViewById(R.id.id_output);
         output.setOnClickListener(this);
+
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+
+        test = findViewById(R.id.id_test);
     }
 
     @Override
         public void onClick(View v){
-
+            vibrator.vibrate(100);
         try {
             if (!(((Button) v).getText().equals("="))&&!(((Button) v).getText().equals("C"))) {
                 String a = (String) ((Button) v).getText();
@@ -92,27 +106,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     list.add(currentWord);
                 }
                 for (int x = 0; x < list.size(); x++) {
-                   /* if(list.get(x).equals("*")){
-
-                    }*/
-                  /*  if(list.get(x).equals("/")){
-
-                    }*/
+                    if(list.get(x).equals("*")){
+                        multpos = x;
+                    }
+                    if(list.get(x).equals("/")){
+                        divpos = x;
+                    }
                     if (list.get(x).equals("+")) {
-                        String before = list.get(x - 1);
+                        addpos = x;
+
+                      /*  String before = list.get(x - 1);
                         String after = list.get(x + 1);
                         int temp = Integer.parseInt(before);
                         int temp2 = Integer.parseInt(after);
                         total = temp + temp2;
-
+                        this.temp = ""+total;*/
                     }
-                  /*  if(list.get(x).equals("-")){
+                    if(list.get(x).equals("-")){
+                        subpos = x;
+                    }
 
-                    }*/
+                    if(multpos > 0){        //something here is not right // work in it later
+                        String before = list.get(multpos-1);
+                        String after = list.get(multpos+1);
+                        int temp = Integer.parseInt(before);
+                        int temp2 = Integer.parseInt(after);
+                        total += temp * temp2;
+                        this.temp = ""+total; //delete this line after
+                        list.subList(multpos-1,multpos+1).clear();
+                    }
+
+                    if(divpos > 0){      //something here is not right // work in it later
+                        String before = list.get(divpos-1);
+                        String after = list.get(divpos+1);
+                        int temp = Integer.parseInt(before);
+                        int temp2 = Integer.parseInt(after);
+                        total += temp / temp2;
+                        this.temp = ""+total; //delete this line after
+                        list.subList(divpos-1,divpos+1).clear();
+                    }
+
+                    if(addpos>0){        //something here is not right // work in it later
+                        String before = list.get(addpos-1);
+                        String after = list.get(addpos+1);
+                        int temp = Integer.parseInt(before);
+                        int temp2 = Integer.parseInt(after);
+                        //total += temp + temp2;
+                        this.temp = ""+total; //delete this line after
+                        list.subList(addpos-1,addpos+1).clear();
+                    }
+
+                    test.setText(""+list);
                     /*list.remove(x);
                     list.remove(x - 1);
                     list.remove(x);*/
                 }
+
+
                 output.setText("" + total);
 
             }
@@ -120,6 +170,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             if (((Button) v).getText().equals("C")) {
                 output.setText("");
+                temp = "";
+                total = 0;
                     while (list.size() > 0) {
                         for (int x = 0; x < list.size(); x++) {
                             list.remove(x);
