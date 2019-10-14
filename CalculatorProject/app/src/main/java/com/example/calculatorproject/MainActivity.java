@@ -166,20 +166,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         list.subList(subpos,subpos+2).clear();
                     }
 
-
                 }
 
                 output.setText(""+total);
-                //test.setText(""+list);
-             //   test.setText(""+multpos + " " + list);
-              //  test.setText(""+list);
-
-
-
-
 
             }
-
 
             if (((Button) v).getText().equals("C")) {
                 output.setText("");
