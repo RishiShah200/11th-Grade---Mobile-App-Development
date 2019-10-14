@@ -7,14 +7,24 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/id_output"
-        android:layout_width="match_parent"
-        android:layout_height="287dp"
-        android:gravity="right|center_vertical"
-        android:onClick="onClick"
-        android:text="Output"
-        android:textSize="60dp" />
+    <HorizontalScrollView
+        android:id="@+id/id_horizontalscrollview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right">
+
+        <TextView
+            android:id="@+id/id_output"
+            android:layout_width="wrap_content"
+            android:layout_height="287dp"
+            android:gravity="right|center_vertical"
+            android:onClick="onClick"
+            android:scrollbarAlwaysDrawHorizontalTrack="true"
+            android:scrollbars="horizontal"
+            android:scrollHorizontally="true"
+            android:text="Output"
+            android:textSize="60dp" />
+    </HorizontalScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,13 +32,16 @@
         android:gravity="center_horizontal|center_vertical"
         android:hapticFeedbackEnabled="true"
         android:orientation="horizontal"
+        android:paddingBottom="10dp"
         android:textSize="20dp">
 
         <Button
             android:id="@+id/id_button1"
-            style="@style/Widget.AppCompat.Button.Colored"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
             android:padding="10dp"
             android:text="1"
@@ -38,6 +51,8 @@
             android:id="@+id/id_button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
             android:text="2"
             android:textSize="20dp" />
@@ -46,6 +61,8 @@
             android:id="@+id/id_button3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
             android:text="3"
             android:textSize="20dp" />
@@ -54,6 +71,8 @@
             android:id="@+id/id_buttonplus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
             android:text="+"
             android:textSize="20dp" />
@@ -65,12 +84,15 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center_vertical"
         android:hapticFeedbackEnabled="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="10dp">
 
         <Button
             android:id="@+id/id_button4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
             android:text="4"
             android:textSize="20dp" />
@@ -79,6 +101,8 @@
             android:id="@+id/id_button5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
             android:text="5"
             android:textSize="20dp" />
@@ -87,6 +111,8 @@
             android:id="@+id/id_button6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
             android:text="6"
             android:textSize="20dp" />
@@ -95,6 +121,8 @@
             android:id="@+id/id_buttonminus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
             android:text="-"
             android:textSize="20dp" />
@@ -106,12 +134,15 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center_vertical"
         android:hapticFeedbackEnabled="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="10dp">
 
         <Button
             android:id="@+id/id_button7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
             android:text="7"
             android:textSize="20dp" />
@@ -120,6 +151,8 @@
             android:id="@+id/id_button8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
             android:text="8"
             android:textSize="20dp" />
@@ -128,6 +161,8 @@
             android:id="@+id/id_button9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
             android:text="9"
             android:textSize="20dp" />
@@ -136,6 +171,8 @@
             android:id="@+id/id_buttonmultiply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
             android:text="*"
             android:textSize="20dp" />
@@ -146,12 +183,15 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center_vertical"
         android:hapticFeedbackEnabled="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="10dp">
 
         <Button
             android:id="@+id/id_buttonclear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
             android:text="C"
             android:textSize="20dp" />
@@ -160,6 +200,8 @@
             android:id="@+id/id_button0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
             android:text="0"
             android:textSize="20dp" />
@@ -168,6 +210,8 @@
             android:id="@+id/id_buttonequals"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
             android:text="="
             android:textSize="20dp" />
@@ -176,6 +220,8 @@
             android:id="@+id/id_buttondivide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
             android:text="/"
             android:textSize="20dp" />
@@ -188,5 +234,7 @@
         android:layout_height="wrap_content"
         android:onClick="onClick"
         android:text="TextView" />
+
+
 
 </LinearLayout>

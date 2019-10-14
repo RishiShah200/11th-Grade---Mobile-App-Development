@@ -4,9 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -44,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<String> list = new ArrayList<String>();
 
     Vibrator vibrator;
+
+    HorizontalScrollView scrollview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,10 +89,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         divide.setOnClickListener(this);
         output = findViewById(R.id.id_output);
         output.setOnClickListener(this);
+        output.setMovementMethod(new ScrollingMovementMethod());
+        output.setClickable(false);
 
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
         test = findViewById(R.id.id_test);
+
+        scrollview = findViewById(R.id.id_horizontalscrollview);
+        scrollview.arrowScroll(1);
+
     }
 
     @Override
@@ -105,38 +117,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String currentWord = tokenizer.nextToken();
                     list.add(currentWord);
                 }
+
+
                 for (int x = 0; x < list.size(); x++) {
                     if(list.get(x).equals("*")){
                         multpos = x;
                     }
-                    if(list.get(x).equals("/")){
+                    /*if(list.get(x).equals("/")){
                         divpos = x;
                     }
                     if (list.get(x).equals("+")) {
                         addpos = x;
 
-                      /*  String before = list.get(x - 1);
+                        /*String before = list.get(x - 1);
                         String after = list.get(x + 1);
                         int temp = Integer.parseInt(before);
                         int temp2 = Integer.parseInt(after);
                         total = temp + temp2;
-                        this.temp = ""+total;*/
+                        this.temp = ""+total;
                     }
                     if(list.get(x).equals("-")){
                         subpos = x;
-                    }
+                    }*/
+
+                   if(list.get(x).equals("+")){
+                       addpos = x;
+                   }
 
                     if(multpos > 0){        //something here is not right // work in it later
                         String before = list.get(multpos-1);
                         String after = list.get(multpos+1);
                         int temp = Integer.parseInt(before);
                         int temp2 = Integer.parseInt(after);
-                        total += temp * temp2;
+                        total = temp * temp2;
                         this.temp = ""+total; //delete this line after
-                        list.subList(multpos-1,multpos+1).clear();
+                        list.set(multpos-1,""+total);
+                        list.subList(multpos,multpos+2).clear();
+                        test.setText(""+list);
+
                     }
 
-                    if(divpos > 0){      //something here is not right // work in it later
+                   /* if(divpos > 0){      //something here is not right // work in it later
                         String before = list.get(divpos-1);
                         String after = list.get(divpos+1);
                         int temp = Integer.parseInt(before);
@@ -144,26 +165,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         total += temp / temp2;
                         this.temp = ""+total; //delete this line after
                         list.subList(divpos-1,divpos+1).clear();
-                    }
+                    }*/
 
                     if(addpos>0){        //something here is not right // work in it later
                         String before = list.get(addpos-1);
                         String after = list.get(addpos+1);
                         int temp = Integer.parseInt(before);
                         int temp2 = Integer.parseInt(after);
-                        //total += temp + temp2;
+                        total = temp + temp2;
                         this.temp = ""+total; //delete this line after
-                        list.subList(addpos-1,addpos+1).clear();
+                        list.set(addpos-1,""+total);
+                        list.subList(addpos,addpos+2).clear();
+
+
                     }
 
-                    test.setText(""+list);
-                    /*list.remove(x);
-                    list.remove(x - 1);
-                    list.remove(x);*/
+
                 }
 
+                output.setText(""+total);
+                //test.setText(""+list);
+             //   test.setText(""+multpos + " " + list);
+                test.setText(""+list);
 
-                output.setText("" + total);
+
+
+
 
             }
 
@@ -179,6 +206,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         temp = "";
                         total = 0;
                     }
+                for (int x = 0; x < list.size(); x++) {
+                    list.remove(x);
+                }
+                test.setText(""+list);
             }
 
         }catch(Exception e){
