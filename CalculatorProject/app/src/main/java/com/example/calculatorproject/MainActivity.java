@@ -2,6 +2,7 @@ package com.example.calculatorproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.text.method.ScrollingMovementMethod;
@@ -98,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         scrollview = findViewById(R.id.id_horizontalscrollview);
         scrollview.arrowScroll(1);
+
+        output.setTextColor(Color.BLACK);
 
     }
 

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
     android:orientation="vertical"
+    android:background="@drawable/gradient_background"
     tools:context=".MainActivity">
 
     <HorizontalScrollView
@@ -17,7 +17,7 @@
         <TextView
             android:id="@+id/id_output"
             android:layout_width="wrap_content"
-            android:layout_height="287dp"
+            android:layout_height="80dp"
             android:gravity="right|center_vertical"
             android:onClick="onClick"
             android:scrollbarAlwaysDrawHorizontalTrack="true"
@@ -34,7 +34,7 @@
         android:gravity="center_horizontal|center_vertical"
         android:hapticFeedbackEnabled="true"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
+        android:paddingBottom="5dp"
         android:textSize="20dp">
 
         <Button
@@ -44,7 +44,6 @@
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
-            android:padding="10dp"
             android:text="1"
             android:textSize="20dp" />
 
@@ -86,7 +85,7 @@
         android:gravity="center_horizontal|center_vertical"
         android:hapticFeedbackEnabled="true"
         android:orientation="horizontal"
-        android:paddingBottom="10dp">
+        android:paddingBottom="5dp">
 
         <Button
             android:id="@+id/id_button4"
@@ -136,7 +135,7 @@
         android:gravity="center_horizontal|center_vertical"
         android:hapticFeedbackEnabled="true"
         android:orientation="horizontal"
-        android:paddingBottom="10dp">
+        android:paddingBottom="5dp">
 
         <Button
             android:id="@+id/id_button7"
@@ -185,7 +184,7 @@
         android:gravity="center_horizontal|center_vertical"
         android:hapticFeedbackEnabled="true"
         android:orientation="horizontal"
-        android:paddingBottom="10dp">
+        android:paddingBottom="5dp">
 
         <Button
             android:id="@+id/id_buttonclear"
