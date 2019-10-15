@@ -25,6 +25,7 @@
             android:scrollHorizontally="true"
             android:text="Output"
             android:textStyle="bold"
+            android:clickable="false"
             android:textSize="60dp" />
     </HorizontalScrollView>
 

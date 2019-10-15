@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
         public void onClick(View v){
-            vibrator.vibrate(100);
+            vibrator.vibrate(80);
         try {
             if (!(((Button) v).getText().equals("="))&&!(((Button) v).getText().equals("C"))) {
                 String a = (String) ((Button) v).getText();
@@ -193,7 +193,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
         }catch(Exception e){
-            output.setText(e+"Something has gone terribly wrong");
+            output.setText("Error");
+            test.setText(e+"Something has gone terribly wrong");
         }
 
         }
