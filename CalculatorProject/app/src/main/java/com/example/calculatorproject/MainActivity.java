@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
@@ -121,16 +122,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     list.add(currentWord);
                 }
 
-                test.setText(""+list);
-
-
-                while(list.size()>1) {
+                while(list.size()>1) {      //current error. Running infintely when doing operator after = (because two things in list still.  Make if statement to deal with this)
                     multpos = list.indexOf("*");
                     divpos = list.indexOf("/");
                     addpos = list.indexOf("+");
                     subpos = list.indexOf("-");
-
-
 
                     if(divpos >= 0){      //something here is not right // work in it later
                         double temp = Double.parseDouble(list.get(divpos-1));
@@ -168,10 +164,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         list.set(subpos-1,""+total);
                         list.subList(subpos,subpos+2).clear();
                     }
+                    Log.d("rishi_error",list.toString());
 
                 }
 
                 output.setText(""+total);
+
 
             }
 
