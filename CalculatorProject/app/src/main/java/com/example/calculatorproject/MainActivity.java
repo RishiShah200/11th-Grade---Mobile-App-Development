@@ -36,19 +36,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button minus;
     Button multiply;
     Button divide;
+    Button root;
     TextView output;
     TextView test;
     String temp = "";
-    String delim = "+-*/";
+    String delim = "√+-*/";
     int multpos;
     int divpos;
     int addpos;     //int values used to hold index values of delimeters in loop
     int subpos;
 
     double total;
+
+    boolean findroot = false;
     ArrayList<String> list = new ArrayList<String>();
 
     Vibrator vibrator;      //buttons vibrate when clicked
+
+    String tempStore;
 
     HorizontalScrollView scrollview;
     @Override
@@ -90,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         divide.setOnClickListener(this);
         output = findViewById(R.id.id_output);
         output.setOnClickListener(this);
-    //    output.setMovementMethod(new ScrollingMovementMethod());
         output.setClickable(false);
 
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
@@ -102,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         output.setTextColor(Color.BLACK);
+
+        root = findViewById(R.id.id_squareroot);
 
     }
 
@@ -116,13 +122,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             if (((Button) v).getText().equals("=")) {
+
+                /*if(list.get(0).equals("Infinity")||list.get(0).equals("NaN")){
+                    list.set(0,"Error");
+                }*/
                 StringTokenizer tokenizer = new StringTokenizer(temp, delim, true);
                 while (tokenizer.hasMoreTokens()) {        //return boolean
                     String currentWord = tokenizer.nextToken();
                     list.add(currentWord);
                 }
 
-                while(list.size()>1) {      //current error. Running infintely when doing operator after = (because two things in list still.  Make if statement to deal with this)
+                while(list.size()>1) {    //current error. Running infinetly when doing operator after = (because two things in list still.  Make if statement to deal with this)
+
+
+                    if(list.size()==2 && !list.contains("+-*/"))    //do not do this
+                        list.remove(0);
+
                     multpos = list.indexOf("*");
                     divpos = list.indexOf("/");
                     addpos = list.indexOf("+");
@@ -164,12 +179,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         list.set(subpos-1,""+total);
                         list.subList(subpos,subpos+2).clear();
                     }
-                    Log.d("rishi_error",list.toString());
-
+                   /* else if(list.get(0).equals("√")){
+                        findroot = true;
+                    }
+                    if(findroot){
+                        total = Math.sqrt(total);
+                        list.set(0,""+total);
+                        this.temp = ""+total;
+                    }*/
+                    Log.d("rishi_error",""+list);
+                    test.setText(""+list);
                 }
 
                 output.setText(""+total);
-
 
             }
 

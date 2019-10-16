@@ -17,7 +17,7 @@
         <TextView
             android:id="@+id/id_output"
             android:layout_width="wrap_content"
-            android:layout_height="287dp"
+            android:layout_height="250dp"
             android:gravity="right|center_vertical"
             android:text="Output"
             android:textSize="60dp"

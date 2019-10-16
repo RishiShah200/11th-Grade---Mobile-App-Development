@@ -78,6 +78,16 @@
             android:text="+"
             android:textSize="20dp" />
 
+        <Button
+            android:id="@+id/id_squareroot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorAccent"
+            android:onClick="onClick"
+            android:text="√"
+            android:textSize="20dp" />
+
     </LinearLayout>
 
     <LinearLayout
