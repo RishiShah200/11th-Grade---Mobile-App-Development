@@ -42,13 +42,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String delim = "+-*/";
     int multpos;
     int divpos;
-    int addpos;
+    int addpos;     //int values used to hold index values of delimeters in loop
     int subpos;
 
     double total;
     ArrayList<String> list = new ArrayList<String>();
 
-    Vibrator vibrator;
+    Vibrator vibrator;      //buttons vibrate when clicked
 
     HorizontalScrollView scrollview;
     @Override
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         divide.setOnClickListener(this);
         output = findViewById(R.id.id_output);
         output.setOnClickListener(this);
-        output.setMovementMethod(new ScrollingMovementMethod());
+    //    output.setMovementMethod(new ScrollingMovementMethod());
         output.setClickable(false);
 
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
@@ -98,7 +98,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         test = findViewById(R.id.id_test);
 
         scrollview = findViewById(R.id.id_horizontalscrollview);
-        scrollview.arrowScroll(1);
+        scrollview.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+
 
         output.setTextColor(Color.BLACK);
 
