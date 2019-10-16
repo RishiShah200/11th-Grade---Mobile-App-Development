@@ -184,19 +184,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     test.setText(""+list);
                     output.setText(""+total);
-                    if(output.getText().equals("Infinity") || output.getText().equals("NaN")){
+                    if(output.getText().equals("Infinity") || output.getText().equals("NaN")){      //check if this works
                         output.setText("Error");
                     }
-                    /*if(divpos>-1&& list.get(divpos+1).equals("0")){
-                        output.setText("Error");
-                    }
-                /*    if(list.get(divpos-1).equals("0") && list.get(divpos+1).equals("0")){
-                        output.setText("Error");
-                    }*/
                 }
-
-
-
             }
 
             if (((Button) v).getText().equals("C")) {
