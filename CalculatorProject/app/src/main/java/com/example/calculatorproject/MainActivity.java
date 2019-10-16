@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     double total;
 
     boolean findroot = false;
-    ArrayList<String> list = new ArrayList<String>();
 
     Vibrator vibrator;      //buttons vibrate when clicked
 
@@ -113,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
         public void onClick(View v){
+
+        ArrayList<String> list = new ArrayList<String>();
             vibrator.vibrate(80);
         try {
             if (!(((Button) v).getText().equals("="))&&!(((Button) v).getText().equals("C"))) {
@@ -123,25 +124,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             if (((Button) v).getText().equals("=")) {
 
-                /*if(list.get(0).equals("Infinity")||list.get(0).equals("NaN")){
-                    list.set(0,"Error");
-                }*/
                 StringTokenizer tokenizer = new StringTokenizer(temp, delim, true);
                 while (tokenizer.hasMoreTokens()) {        //return boolean
                     String currentWord = tokenizer.nextToken();
                     list.add(currentWord);
+
+                }
+
+                multpos = list.indexOf("*");
+                divpos = list.indexOf("/");
+                addpos = list.indexOf("+");
+                subpos = list.indexOf("-");
+                if(multpos<0&&divpos<0&&addpos<0&&subpos<0) {       //if just a number, print that number to screen
+                    output.setText(""+list.get(0));
                 }
 
                 while(list.size()>1) {    //current error. Running infinetly when doing operator after = (because two things in list still.  Make if statement to deal with this)
-
-
-                    if(list.size()==2 && !list.contains("+-*/"))    //do not do this
-                        list.remove(0);
-
                     multpos = list.indexOf("*");
                     divpos = list.indexOf("/");
                     addpos = list.indexOf("+");
                     subpos = list.indexOf("-");
+
 
                     if(divpos >= 0){      //something here is not right // work in it later
                         double temp = Double.parseDouble(list.get(divpos-1));
@@ -179,19 +182,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         list.set(subpos-1,""+total);
                         list.subList(subpos,subpos+2).clear();
                     }
-                   /* else if(list.get(0).equals("√")){
-                        findroot = true;
-                    }
-                    if(findroot){
-                        total = Math.sqrt(total);
-                        list.set(0,""+total);
-                        this.temp = ""+total;
-                    }*/
-                    Log.d("rishi_error",""+list);
                     test.setText(""+list);
+                    output.setText(""+total);
+                    if(output.getText().equals("Infinity") || output.getText().equals("NaN")){
+                        output.setText("Error");
+                    }
+                    /*if(divpos>-1&& list.get(divpos+1).equals("0")){
+                        output.setText("Error");
+                    }
+                /*    if(list.get(divpos-1).equals("0") && list.get(divpos+1).equals("0")){
+                        output.setText("Error");
+                    }*/
                 }
 
-                output.setText(""+total);
+
 
             }
 
