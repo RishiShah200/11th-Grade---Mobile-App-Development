@@ -15,7 +15,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     Button a1;
     Button a2;
@@ -38,14 +37,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button cos;
     Button tan;
     TextView output;
-    String temp = "";
-    String delim = "^SINCOSTAN+–*/";
+    String delim = "^+–*/";
+    String temp;
     int multpos;
     int divpos;
     int addpos;     //int values used to hold index values of delimeters in loop
     int subpos;
     int expos;
-    boolean isSin;      //maybe int pos to store index values instead
     double total;
     Vibrator vibrator;      //buttons vibrate when clicked
     HorizontalScrollView scrollview;
@@ -55,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        temp = "";
         a1 = findViewById(R.id.id_button1);
         a1.setOnClickListener(this);
         a2 = findViewById(R.id.id_button2);
@@ -115,22 +113,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             if (((Button) v).getText().equals("=")) {
                 StringTokenizer tokenizer = new StringTokenizer(temp, delim, true);
+
                 while (tokenizer.hasMoreTokens()) {        //return boolean
                     String currentWord = tokenizer.nextToken();
                     list.add(currentWord);
                 }
+
                 multpos = list.indexOf("*");
                 divpos = list.indexOf("/");
                 addpos = list.indexOf("+");
                 subpos = list.indexOf("–");
                 expos = list.indexOf("^");
+
                 if (multpos < 0 && divpos < 0 && addpos < 0 && subpos < 0 && expos < 0) {       //if just a number, print that number to screen
                     output.setText("" + list.get(0));
                 }
                 if ((list.get(divpos + 1).equals("0")) && divpos > 0) {
                     throw new Exception("Error");
                 }
+                if (multpos == 0) {
+                    throw new Exception("Error");
+                }
+                if (addpos == 0) {
+                    throw new Exception("Error");
+                }
+                if (subpos == 0) {
+                    throw new Exception("Error");
+                }
+
                 while (list.size() > 1) {
+
                     multpos = list.indexOf("*");
                     divpos = list.indexOf("/");
                     addpos = list.indexOf("+");
@@ -176,7 +188,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     output.setText("" + total);       //set text of output to the answer
                 }
+
             }
+
             if (((Button) v).getText().equals("C")) {       //clears everything if clicked
                 output.setText("");
                 temp = "";

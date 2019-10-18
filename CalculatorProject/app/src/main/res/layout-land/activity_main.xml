@@ -144,7 +144,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@color/colorAccent"
-            android:text="SIN" />
+            android:text="sin" />
 
     </LinearLayout>
 
@@ -202,7 +202,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@color/colorAccent"
-            android:text="COS" />
+            android:text="cos" />
     </LinearLayout>
 
     <LinearLayout
@@ -259,7 +259,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@color/colorAccent"
-            android:text="TAN" />
+            android:text="tan" />
 
     </LinearLayout>
 
