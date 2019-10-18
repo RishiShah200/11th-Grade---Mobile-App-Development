@@ -34,14 +34,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button multiply;
     Button divide;
     Button exponent;
+    Button sin;     //only if time
+    Button cos;
+    Button tan;
     TextView output;
     String temp = "";
-    String delim = "^+–*/";
+    String delim = "^SINCOSTAN+–*/";
     int multpos;
     int divpos;
     int addpos;     //int values used to hold index values of delimeters in loop
     int subpos;
     int expos;
+    boolean isSin;      //maybe int pos to store index values instead
     double total;
     Vibrator vibrator;      //buttons vibrate when clicked
     HorizontalScrollView scrollview;
@@ -93,6 +97,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         exponent = findViewById(R.id.id_exponent);
         output.setTextColor(Color.WHITE);
         layout = findViewById(R.id.id_mainlayout);
+        sin = findViewById(R.id.id_sin);        //add if time
+        cos = findViewById(R.id.id_cos);
+        tan = findViewById(R.id.id_tan);
     }
 
     @Override
