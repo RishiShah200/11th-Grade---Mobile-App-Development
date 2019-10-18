@@ -79,13 +79,13 @@
             android:textSize="20dp" />
 
         <Button
-            android:id="@+id/id_squareroot"
+            android:id="@+id/id_exponent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
-            android:text="√"
+            android:text="^"
             android:textSize="20dp" />
 
     </LinearLayout>
@@ -135,7 +135,7 @@
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@color/colorAccent"
             android:onClick="onClick"
-            android:text="-"
+            android:text="–"
             android:textSize="20dp" />
 
     </LinearLayout>
@@ -238,14 +238,6 @@
             android:textSize="20dp" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/id_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onClick"
-        android:text="TextView" />
-
 
 
 </LinearLayout>
