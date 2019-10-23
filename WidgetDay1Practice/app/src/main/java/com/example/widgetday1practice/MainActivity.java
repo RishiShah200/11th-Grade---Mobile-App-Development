@@ -35,10 +35,9 @@ public class MainActivity extends AppCompatActivity {
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     seekBar.setEnabled(false);
-                }
-                else{
+                } else {
                     seekBar.setEnabled(true);
                 }
             }
@@ -52,23 +51,20 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                if (s.toString().toLowerCase().equals("red")) {
+                    textColor.setTextColor(Color.RED);
+                } else if (s.toString().toLowerCase().equals("green")) {
+                    textColor.setTextColor(Color.BLUE);
+                } else if (s.toString().toLowerCase().equals("blue")) {
+                    textColor.setTextColor(Color.GREEN);
+                } else {
+                    textColor.setTextColor(Color.BLACK);
+                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.equals("red")){
-                    textColor.setTextColor(Color.parseColor((String)s));
-                }
-                else if(s.equals("blue")){
-                    textColor.setTextColor(Color.parseColor((String)s));
-                }
-                else if(s.equals("green")){
-                    textColor.setTextColor(Color.parseColor((String)s));
-                }
-                else{
-                    textColor.setTextColor(Color.BLACK);
-                }
+
             }
         });
 
@@ -76,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                btn.setWidth(progress);
+                btn.setWidth(progress * 15);
             }
 
             @Override
