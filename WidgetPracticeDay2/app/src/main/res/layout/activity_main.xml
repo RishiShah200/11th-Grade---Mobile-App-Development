@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Switch
+        android:id="@+id/id_switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1 " />
+
+    <Switch
+        android:id="@+id/id_switch2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2 " />
+
+    <Switch
+        android:id="@+id/id_switch3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3 " />
+
+    <TextView
+        android:id="@+id/id_textcolor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Color" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/id_inputverify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name" />
+
+        <Button
+            android:id="@+id/id_verifybutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Verify" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/id_verifytext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Not Verified" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
+
+        <EditText
+            android:id="@+id/id_inputdatabase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name" />
+
+        <Button
+            android:id="@+id/id_buttoncheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Check" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/id_databasetext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        android:text="Not in Database" />
+
+    <TextView
+        android:id="@+id/id_textsize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Text Size" />
+
+    <SeekBar
+        android:id="@+id/id_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
