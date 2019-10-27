@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                button.setWidth(progress);
+                button.setWidth(progress*10);
             }
 
             @Override
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+        
 
 
     }
