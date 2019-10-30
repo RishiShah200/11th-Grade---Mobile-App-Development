@@ -3,6 +3,7 @@ package com.example.widgetsday2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -11,6 +12,8 @@ public class MainActivity extends AppCompatActivity {
 
     RadioGroup radioGroup;
     TextView textView;
+    ImageView leftimage;
+    ImageView darthvader;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,6 +21,10 @@ public class MainActivity extends AppCompatActivity {
 
         radioGroup = findViewById(R.id.id_radiogroup);
         textView = findViewById(R.id.textView);
+        leftimage = findViewById(R.id.id_leftimage);
+        darthvader = findViewById(R.id.id_darthvader);
+
+        leftimage.setImageResource(R.drawable.vader);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
