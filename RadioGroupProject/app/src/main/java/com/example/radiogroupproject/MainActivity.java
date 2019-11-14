@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     int myScore;
     int cpucnt;
     ArrayList<String> list = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         volume.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId == R.id.id_100){
-                    Toast myToast = Toast.makeText(MainActivity.this,"High Volume can damage your hearing",Toast.LENGTH_SHORT);
+                if (checkedId == R.id.id_100) {
+                    Toast myToast = Toast.makeText(MainActivity.this, "High Volume can damage your hearing", Toast.LENGTH_SHORT);
                     myToast.show();
                 }
 
@@ -53,13 +54,13 @@ public class MainActivity extends AppCompatActivity {
         rps.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId == R.id.id_rock){
+                if (checkedId == R.id.id_rock) {
                     choice = "Rock";
                 }
-                if(checkedId == R.id.id_paper){
+                if (checkedId == R.id.id_paper) {
                     choice = "Paper";
                 }
-                if(checkedId == R.id.id_scissors){
+                if (checkedId == R.id.id_scissors) {
                     choice = "Scissors";
                 }
             }
@@ -68,47 +69,39 @@ public class MainActivity extends AppCompatActivity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int rand = (int)(Math.random()*3);
+                int rand = (int) (Math.random() * 3);
                 cpuchoice = list.get(rand);
-                if(choice == "Rock" && cpuchoice == "Paper"){
+                if (choice == "Rock" && cpuchoice == "Paper") {
                     score.setText("CPU Wins! \n Player: " + myScore + " " + "CPU: " + cpucnt);
                     img.setImageResource(R.drawable.paper);
                     cpucnt++;
-                }
-                else if(choice == "Rock" && cpuchoice == "Scissors"){
+                } else if (choice == "Rock" && cpuchoice == "Scissors") {
                     score.setText("You Win! \n Player: " + myScore + " " + "CPU: " + cpucnt);
                     img.setImageResource(R.drawable.scissor);
                     myScore++;
-                }
-                else if(choice == "Rock" && cpuchoice == "Rock"){
+                } else if (choice == "Rock" && cpuchoice == "Rock") {
                     score.setText("You Tied \n Player: " + myScore + " " + "CPU: " + cpucnt);
                     img.setImageResource(R.drawable.rock);
-                }
-                else if(choice == "Paper" && cpuchoice == "Paper"){
+                } else if (choice == "Paper" && cpuchoice == "Paper") {
                     score.setText("You Have Tied \n Player: " + myScore + " " + "CPU: " + cpucnt);
                     img.setImageResource(R.drawable.paper);
-                }
-                else if(choice == "Paper" && cpuchoice == "Rock"){
+                } else if (choice == "Paper" && cpuchoice == "Rock") {
                     score.setText("You Win! \n Player: " + myScore + " " + "CPU: " + cpucnt);
                     img.setImageResource(R.drawable.rock);
                     myScore++;
-                }
-                else if(choice == "Paper" && cpuchoice == "Scissors"){
+                } else if (choice == "Paper" && cpuchoice == "Scissors") {
                     score.setText("CPU WINS! \n Player: " + myScore + " " + "CPU: " + cpucnt);
                     img.setImageResource(R.drawable.scissor);
                     cpucnt++;
-                }
-                else if(choice == "Scissors" && cpuchoice == "Scissors"){
-                    score.setText("You Have Tied! \n Player: "+ myScore + " " + "CPU: "+ cpucnt);
+                } else if (choice == "Scissors" && cpuchoice == "Scissors") {
+                    score.setText("You Have Tied! \n Player: " + myScore + " " + "CPU: " + cpucnt);
                     img.setImageResource(R.drawable.scissor);
-                }
-                else if(choice == "Scissors" && cpuchoice == "Paper"){
+                } else if (choice == "Scissors" && cpuchoice == "Paper") {
                     score.setText("You Win! \n Player: " + myScore + " " + "CPU: " + cpucnt);
                     img.setImageResource(R.drawable.paper);
                     myScore++;
-                }
-                else if(choice == "Scissors" && cpuchoice == "Rock"){
-                    score.setText("CPU Wins! \n Player: "+ myScore + " " + "CPU: " + cpucnt);
+                } else if (choice == "Scissors" && cpuchoice == "Rock") {
+                    score.setText("CPU Wins! \n Player: " + myScore + " " + "CPU: " + cpucnt);
                     img.setImageResource(R.drawable.rock);
                     cpucnt++;
                 }
