@@ -29,31 +29,18 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.id_output);
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-        spinner = findViewById(R.id.id_spinner);
-        button = findViewById(R.id.id_button);
+            spinner = findViewById(R.id.id_spinner);
+            button = findViewById(R.id.id_button);
 
-        list = new ArrayList<>();
+            list = new ArrayList<>();
 
-        list.add("Rishi");
-        list.add("Akash");
-        list.add("Zareeb");
-        list.add("Rachit");
+            list.add("Rishi");
+            list.add("Akash");
+            list.add("Zareeb");
+            list.add("Rachit");
 
-        adapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,list);
-        spinner.setAdapter(adapter);
-
-
-
-
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    spinner.setAdapter(null);
-                    list.clear();
-                    textView.setText("All Elements Removed");
-                }
-            });
-
+            adapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,list);
+            spinner.setAdapter(adapter);
 
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -64,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                     textView.setText("All Elements Removed");
+                }
+            });
+
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    list.clear();
+                    adapter.notifyDataSetChanged();
                 }
             });
 
