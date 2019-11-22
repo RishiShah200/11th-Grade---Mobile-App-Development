@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="212dp"
+        android:layout_height="91dp"
+        android:text="1 Zareeb = 100 Akash's \n 1 Computer = 0.1 Rachit's \n 1 Akash = 2 Arav's \n 1 School = 1 Teacher"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.19"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.74" />
+
+    <Spinner
+        android:id="@+id/id_unitfrom"
+        android:layout_width="268dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.01999998" />
+
+    <EditText
+        android:id="@+id/id_enternumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/id_unitfrom"
+        app:layout_constraintStart_toStartOf="@+id/id_unitfrom"
+        app:layout_constraintTop_toBottomOf="@+id/id_unitfrom"
+        app:layout_constraintVertical_bias="0.06999999" />
+
+    <Spinner
+        android:id="@+id/id_unitto"
+        android:layout_width="318dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/id_unitfrom"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toStartOf="@+id/id_unitfrom"
+        app:layout_constraintTop_toBottomOf="@+id/id_unitfrom"
+        app:layout_constraintVertical_bias="0.22000003" />
+
+    <TextView
+        android:id="@+id/id_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Result"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/id_unitfrom"
+        app:layout_constraintStart_toStartOf="@+id/id_unitfrom"
+        app:layout_constraintTop_toBottomOf="@+id/id_unitfrom"
+        app:layout_constraintVertical_bias="0.38" />
+</androidx.constraintlayout.widget.ConstraintLayout>
