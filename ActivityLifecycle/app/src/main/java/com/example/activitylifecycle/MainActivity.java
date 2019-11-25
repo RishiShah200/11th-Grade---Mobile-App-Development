@@ -20,10 +20,10 @@ public class MainActivity extends AppCompatActivity {
     EditText enterNumber;
     Spinner unitTo;
     TextView result;
-    ArrayList<String> listFrom;
-    ArrayList<String> listTo;
-    ArrayAdapter<String> adapterFrom;
-    ArrayAdapter<String> adapterTo;
+    ArrayList<String> list;
+    ArrayAdapter<String> adapter;
+    String from;
+    String to;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,29 +35,23 @@ public class MainActivity extends AppCompatActivity {
         unitTo = findViewById(R.id.id_unitto);
         result = findViewById(R.id.id_result);
 
-        listFrom = new ArrayList<>();
-        listTo = new ArrayList<>();
+        list = new ArrayList<>();
 
-        listTo.add("Akash");
-        listTo.add("Rachit");
-        listTo.add("Arav");
-        listTo.add("Teacher");
+        list.add("Akash");
+        list.add("Zareeb");
+        list.add("Computer");
+        list.add("Brain");
 
-        listFrom.add("Zareeb");
-        listFrom.add("Computer");
-        listFrom.add("Akash");
-        listFrom.add("School");
+        result.setTextSize(30);
 
-        adapterFrom = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,listFrom);
-        unitFrom.setAdapter(adapterFrom);
-
-        adapterTo = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,listTo);
-        unitTo.setAdapter(adapterTo);
+        adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, list);
+        unitFrom.setAdapter(adapter);
+        unitTo.setAdapter(adapter);
 
         unitFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                
+                from = list.get(position);
             }
 
             @Override
@@ -66,6 +60,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        unitTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                to = list.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 }
