@@ -1,10 +1,16 @@
 package com.example.listviewsandlifecycle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -58,7 +64,14 @@ public class MainActivity extends AppCompatActivity {
             xmlResource = resource;
         }
 
-        
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
+            LayoutInflater layoutInflater = (LayoutInflater)parentContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);  //sets layout on the screeen
+            View view = layoutInflater.inflate(R.layout.adapter_custom,null);
+
+            return view;
+        }
     }
 }
