@@ -45,7 +45,11 @@ public class MainActivity extends AppCompatActivity {
         arrayList.add("Bobby");
         arrayList.add("Steve");
         arrayList.add("West");
-        arrayList.add("Jim");
+        arrayList.add("Jay");
+        arrayList.add("Bob");
+        arrayList.add("Hi");
+        arrayList.add("Face");
+
 
         CustomAdapter customAdapter = new CustomAdapter(this,R.layout.adapter_custom,arrayList);
         listView.setAdapter(customAdapter);
@@ -75,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
 
             TextView textView = view.findViewById(R.id.id_adapter_text);
             Button button = view.findViewById(R.id.id_adapter_button);
+
+            textView.setText("Name : "+list.get(position));
+            button.setText("Position " + position);
 
             return view;
         }
