@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         list = new ArrayList<>();
-        list.add(candidate1);
         list.add(new Candidate("Giannis Antetokounmpo", 30.9, 17));
         list.add(new Candidate("James Harden", 38.9, 13));
         list.add(new Candidate("Luke Doncic",30.6,13));
