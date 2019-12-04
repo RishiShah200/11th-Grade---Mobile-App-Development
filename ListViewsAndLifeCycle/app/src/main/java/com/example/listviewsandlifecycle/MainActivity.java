@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,11 +79,12 @@ public class MainActivity extends AppCompatActivity {
             LayoutInflater layoutInflater = (LayoutInflater)parentContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);  //sets layout on the screeen
             View view = layoutInflater.inflate(R.layout.adapter_custom,null);
 
-            TextView textView = view.findViewById(R.id.id_adapter_text);
+          /*  TextView textView = view.findViewById(R.id.id_adapter_text);
             Button button = view.findViewById(R.id.id_adapter_button);
 
+
             textView.setText("Name : "+list.get(position));
-            button.setText("Position " + position);
+            button.setText("Position " + position);*/
 
             return view;
         }
