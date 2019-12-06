@@ -24,8 +24,8 @@
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginEnd="256dp"
+        android:layout_marginRight="256dp"
         android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,4 +42,15 @@
         app:layout_constraintHorizontal_bias="0.09"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/id_listview" />
+
+    <TextView
+        android:id="@+id/id_land_extrainfo"
+        android:layout_width="175dp"
+        android:layout_height="279dp"
+        android:gravity="center"
+        android:text="EXTRA STUFF"
+        app:layout_constraintBottom_toBottomOf="@+id/id_listview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/id_listview"
+        app:layout_constraintTop_toTopOf="@+id/id_listview" />
 </androidx.constraintlayout.widget.ConstraintLayout>
