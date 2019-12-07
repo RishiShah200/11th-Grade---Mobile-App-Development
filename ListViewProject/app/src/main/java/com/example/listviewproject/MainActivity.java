@@ -3,14 +3,20 @@ package com.example.listviewproject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,41 +32,45 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String KEY = "thisisthekey";
+    public static final String KEY2 = "thisisthekey2";
+    public static final String KEY3 = "thisisthekey3";
+    public static final String IMAGEKEY = "thisbetterworkl";
+    public static int image;
+    int tempPosition;
     ListView listView;
     ArrayList<Candidate> list;
     TextView gamesWonText;
     TextView ppgText;
     TextView extraInfo;
-    public static final String KEY = "thisisthekey";
-    public static final String KEY2 = "thisisthekey2";
-
+    TextView efgText;
     protected void onStart() {
         super.onStart();
-        Log.d("tag","Start");
+        Log.d("tag", "Start");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("tag","Stop");
+        Log.d("tag", "Stop");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("tag","Destroy");
+        Log.d("tag", "Destroy");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("tag","Pause");
+        Log.d("tag", "Pause");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("tag","Resume");
+        Log.d("tag", "Resume");
     }
 
     @Override
@@ -73,22 +83,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-         gamesWonText = findViewById(R.id.id_gamesWon);
-         ppgText = findViewById(R.id.id_ppg);
+        gamesWonText = findViewById(R.id.id_gamesWon);
+        ppgText = findViewById(R.id.id_ppg);
+
+        efgText = findViewById(R.id.id_efgtext);
+
+        gamesWonText.setTextSize(20);
+        gamesWonText.setTextColor(Color.BLACK);
+
+        ppgText.setTextSize(20);
+        ppgText.setTextColor(Color.BLACK);
+
+        efgText.setTextSize(20);
+        efgText.setTextColor(Color.BLACK);
 
         listView = findViewById(R.id.id_listview);
 
         list = new ArrayList<>();
-        Candidate candidate1 =  new Candidate("Giannis Antetokounmpo", 30.9, 17,R.drawable.giannis,"Giannis Antetokounmpo has a 56.5% field goal percentage and plays 31.7 minutes per game");
-        Candidate candidate2 =  new Candidate("James Harden", 38.9, 13,R.drawable.harden,"James Harden has a 43.8% field goal percentage and plays 37.6 minutes per game");
-        Candidate candidate3 =  new Candidate("Luke Doncic",30.6,13,R.drawable.luka,"Luka Doncic has a 47.8% field goal percentage and plays 33.7 minutes per game");
-        Candidate candidate4 =  new Candidate("LeBron James",25.7,17,R.drawable.lebron,"LeBron James has a 49.8% field goal percentage and plays 34.7 minutes per game");
-        Candidate candidate5 =  new Candidate("Anthony Davis",26.1,17,R.drawable.anthonydavis,"Anthony Davis has a 49.0% field goal percentage and plays 34.2 minutes per game");
-        Candidate candidate6 =  new Candidate("Jimmy Butler",18.8,14,R.drawable.jimmy,"Jimmy Butler has a 43.6% field goal percentage and plays 34.1 minutes per game");
-        Candidate candidate7 =  new Candidate("Pascal Siakam",25.6,15,R.drawable.pascal,"Pascal Siakam has a 50.3% field goal percentage and plays 33.3 minutes per game");
-        Candidate candidate8 =  new Candidate("Karl-Anthony Towns",25.9,10,R.drawable.karl,"Karl-Anthony Towns has a 43.9% field goal percentage and plays 31.2 minutes per game");
-        Candidate candidate9 =  new Candidate("Fred Vanvleet",18.6,15,R.drawable.fred,"Fred Vanvleet o has a 45.9% field goal percentage and plays 30.3 minutes per game");
-        Candidate candidate10 = new Candidate("Joel Embiid",22.8,14,R.drawable.joel,"Joel Embiid has a 51.5% field goal percentage and plays 34.2 minutes per game");
+        Candidate candidate1 = new Candidate("Giannis Antetokounmpo", 30.9, 17, R.drawable.giannis, "Giannis Antetokounmpo has a 56.5% field goal percentage and plays 31.7 minutes per game", 60.4,false);
+        Candidate candidate2 = new Candidate("James Harden", 38.9, 13, R.drawable.harden, "James Harden has a 43.8% field goal percentage and plays 37.6 minutes per game", 53.7,false);
+        Candidate candidate3 = new Candidate("Luke Doncic", 30.6, 13, R.drawable.luka, "Luka Doncic has a 47.8% field goal percentage and plays 33.7 minutes per game,55.4", 55.4,false);
+        Candidate candidate4 = new Candidate("LeBron James", 25.7, 17, R.drawable.lebron, "LeBron James has a 49.8% field goal percentage and plays 34.7 minutes per game", 54.6,false);
+        Candidate candidate5 = new Candidate("Anthony Davis", 26.1, 17, R.drawable.anthonydavis, "Anthony Davis has a 49.0% field goal percentage and plays 34.2 minutes per game", 51.9,false);
+        Candidate candidate6 = new Candidate("Jimmy Butler", 18.8, 14, R.drawable.jimmy, "Jimmy Butler has a 43.6% field goal percentage and plays 34.1 minutes per game", 47.6,false);
+        Candidate candidate7 = new Candidate("Pascal Siakam", 25.6, 15, R.drawable.pascal, "Pascal Siakam has a 50.3% field goal percentage and plays 33.3 minutes per game", 60.9,false);
+        Candidate candidate8 = new Candidate("Karl-Anthony Towns", 25.9, 10, R.drawable.karl, "Karl-Anthony Towns has a 43.9% field goal percentage and plays 31.2 minutes per game", 47.9,false);
+        Candidate candidate9 = new Candidate("Fred Vanvleet", 18.6, 15, R.drawable.fred, "Fred Vanvleet o has a 45.9% field goal percentage and plays 30.3 minutes per game", 49.6,false);
+        Candidate candidate10 = new Candidate("Joel Embiid", 22.8, 14, R.drawable.joel, "Joel Embiid has a 51.5% field goal percentage and plays 34.2 minutes per game", 52.4,false);
 //extra info is going to be field goal percentage and minutes per game
 
         list.add(candidate1);
@@ -102,54 +123,75 @@ public class MainActivity extends AppCompatActivity {
         list.add(candidate9);
         list.add(candidate10);
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             list = savedInstanceState.getParcelableArrayList("List");
             ppgText.setText(savedInstanceState.getString(KEY));
             gamesWonText.setText(savedInstanceState.getString(KEY2));
+            efgText.setText(savedInstanceState.getString(KEY3));
         }
 
-        CustomAdapter customAdapter = new CustomAdapter(this,R.layout.adapter_custom,list);
+        CustomAdapter customAdapter = new CustomAdapter(this, R.layout.adapter_custom, list);
         listView.setAdapter(customAdapter);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-        }
-        else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             extraInfo = findViewById(R.id.id_land_extrainfo);
         }
-
 
 
 //https://www.basketball-reference.com/friv/mvp.html
 
 
+    }
 
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("List", list);
+        outState.putString(KEY, (String) ppgText.getText());
+        outState.putString(KEY2, (String) gamesWonText.getText());
+        outState.putString(KEY3, (String) efgText.getText());
+        outState.putInt(IMAGEKEY,list.get(tempPosition).getImg());
 
     }
 
-    public class Candidate implements Parcelable{
+    public class Candidate implements Parcelable {
 
+        public final Parcelable.Creator<Candidate> CREATOR = new Parcelable.Creator<Candidate>() {
+            public Candidate createFromParcel(Parcel in) {
+                return new Candidate(in);
+            }
+
+            public Candidate[] newArray(int size) {
+                return new Candidate[size];
+            }
+        };
         private double ppg;
         private String name;
         private int gamesWon;
         private int img;
         private String moreInfo;
+        private double efg;
+        private boolean imgClicked;
 
-        public Candidate(String name, double ppg,  int gamesWon, int img, String moreInfo){
+        public Candidate(String name, double ppg, int gamesWon, int img, String moreInfo, double efg, boolean imgClicked) {
 
             this.ppg = ppg;
             this.name = name;
             this.gamesWon = gamesWon;
             this.img = img;
             this.moreInfo = moreInfo;
+            this.efg = efg;
+            this.imgClicked = imgClicked;
 
         }
 
-        private Candidate(Parcel in){
+        private Candidate(Parcel in) {
             ppg = in.readDouble();
             name = in.readString();
             gamesWon = in.readInt();
             img = in.readInt();
             moreInfo = in.readString();
+            efg = in.readDouble();
         }
 
         public int describeContents() {
@@ -162,39 +204,44 @@ public class MainActivity extends AppCompatActivity {
             out.writeInt(gamesWon);
             out.writeInt(img);
             out.writeString(moreInfo);
+            out.writeDouble(efg);
         }
 
-        public final Parcelable.Creator<Candidate> CREATOR = new Parcelable.Creator<Candidate>() {
-            public Candidate createFromParcel(Parcel in) {
-                return new Candidate(in);
-            }
-
-            public Candidate[] newArray(int size) {
-                return new Candidate[size];
-            }
-        };
-
-        public double getPPG(){
+        public double getPPG() {
             return ppg;
         }
 
-        public String getName(){
+        public String getName() {
             return name;
         }
 
-        public int gamesWon(){
+        public int gamesWon() {
             return gamesWon;
         }
-        public int getImg(){
+
+        public int getImg() {
             return img;
         }
-        public String getMoreInfo(){
-           return moreInfo;
+
+        public String getMoreInfo() {
+            return moreInfo;
+        }
+
+        public double getEFG() {
+            return efg;
+        }
+
+        public boolean getImgClicked(){
+            return imgClicked;
+        }
+
+        public void setImgClicked(){
+            imgClicked = true;
         }
 
     }
 
-    public class CustomAdapter extends ArrayAdapter<Candidate>{
+    public class CustomAdapter extends ArrayAdapter<Candidate> {
 
         ArrayList<Candidate> list;
         Context parentContext;
@@ -213,8 +260,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-            LayoutInflater layoutInflater = (LayoutInflater)parentContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);  //sets layout on the screeen
-            View view = layoutInflater.inflate(R.layout.adapter_custom,null);
+            tempPosition = position;
+
+            LayoutInflater layoutInflater = (LayoutInflater) parentContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);  //sets layout on the screeen
+            View view = layoutInflater.inflate(R.layout.adapter_custom, null);
 
             TextView names = view.findViewById(R.id.id_adapter_name);
             Button button = view.findViewById(R.id.id_adapter_remove_button);
@@ -222,46 +271,53 @@ public class MainActivity extends AppCompatActivity {
             ImageView imageView = view.findViewById(R.id.id_adpater_image);
             imageView.setImageResource(list.get(position).getImg());
 
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!(list.get(position).getImgClicked())){
+                        list.get(position).setImgClicked();
+                        image = list.get(position).getImg();
+;                    }
+                    Intent fullPicture = new Intent(MainActivity.this,FullPictureActivity.class);
+                    startActivity(fullPicture);
+                }
+            });
+
             names.setText(list.get(position).getName());
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    gamesWonText.setText("Games Won: "+list.get(position).gamesWon());
+                    gamesWonText.setText(Integer.toString(list.get(position).gamesWon()));
                     ppgText.setText((Double.toString(list.get(position).getPPG())));
+                    efgText.setText(Double.toString(list.get(position).getEFG()));
                 }
             });
 
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 extraInfo = findViewById(R.id.id_land_extrainfo);
+                extraInfo.setMovementMethod(new ScrollingMovementMethod());
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        gamesWonText.setText("Games Won: "+list.get(position).gamesWon());
-                        ppgText.setText((Double.toString(list.get(position).getPPG())));
+                        gamesWonText.setText(Integer.toString(list.get(position).gamesWon()));
+                        ppgText.setText(Double.toString(list.get(position).getPPG()));
+                        efgText.setText(Double.toString(list.get(position).getEFG()));
                         extraInfo.setText(list.get(position).getMoreInfo());
                     }
                 });
             }
 
-          button.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                  list.remove(position);
-                  notifyDataSetChanged();
-              }
-          });
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    list.remove(position);
+                    notifyDataSetChanged();
+                }
+            });
 
             return view;
         }
-
-    }
-
-    protected void onSaveInstanceState(Bundle outState){
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("List",list);
-        outState.putString(KEY, (String) ppgText.getText());
-        outState.putString(KEY2, (String) gamesWonText.getText());
 
     }
 
