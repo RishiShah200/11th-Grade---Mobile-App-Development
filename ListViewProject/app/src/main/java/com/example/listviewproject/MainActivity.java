@@ -2,11 +2,18 @@ package com.example.listviewproject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationCompatExtras;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -30,6 +37,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.listviewproject.App.CHANNEL_1_ID;
+import static com.example.listviewproject.App.CHANNEL_2_ID;
+
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String KEY = "thisisthekey";
@@ -37,13 +48,18 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY3 = "thisisthekey3";
     public static final String IMAGEKEY = "thisbetterworkl";
     public static int image;
-    int tempPosition;
+    public static int tempPosition;
+    public static String name;
+
+    private NotificationManagerCompat notificationManager;
+
     ListView listView;
     ArrayList<Candidate> list;
     TextView gamesWonText;
     TextView ppgText;
     TextView extraInfo;
     TextView efgText;
+
     protected void onStart() {
         super.onStart();
         Log.d("tag", "Start");
@@ -83,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        notificationManager = NotificationManagerCompat.from(this);
+
         gamesWonText = findViewById(R.id.id_gamesWon);
         ppgText = findViewById(R.id.id_ppg);
 
@@ -102,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         list = new ArrayList<>();
         Candidate candidate1 = new Candidate("Giannis Antetokounmpo", 30.9, 17, R.drawable.giannis, "Giannis Antetokounmpo has a 56.5% field goal percentage and plays 31.7 minutes per game", 60.4,false);
         Candidate candidate2 = new Candidate("James Harden", 38.9, 13, R.drawable.harden, "James Harden has a 43.8% field goal percentage and plays 37.6 minutes per game", 53.7,false);
-        Candidate candidate3 = new Candidate("Luke Doncic", 30.6, 13, R.drawable.luka, "Luka Doncic has a 47.8% field goal percentage and plays 33.7 minutes per game,55.4", 55.4,false);
+        Candidate candidate3 = new Candidate("Luka Doncic", 30.6, 13, R.drawable.luka, "Luka Doncic has a 47.8% field goal percentage and plays 33.7 minutes per game,55.4", 55.4,false);
         Candidate candidate4 = new Candidate("LeBron James", 25.7, 17, R.drawable.lebron, "LeBron James has a 49.8% field goal percentage and plays 34.7 minutes per game", 54.6,false);
         Candidate candidate5 = new Candidate("Anthony Davis", 26.1, 17, R.drawable.anthonydavis, "Anthony Davis has a 49.0% field goal percentage and plays 34.2 minutes per game", 51.9,false);
         Candidate candidate6 = new Candidate("Jimmy Butler", 18.8, 14, R.drawable.jimmy, "Jimmy Butler has a 43.6% field goal percentage and plays 34.1 minutes per game", 47.6,false);
@@ -143,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -266,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
             View view = layoutInflater.inflate(R.layout.adapter_custom, null);
 
             TextView names = view.findViewById(R.id.id_adapter_name);
-            Button button = view.findViewById(R.id.id_adapter_remove_button);
+            ImageView deleteImage = view.findViewById(R.id.id_adapter_remove_button);       //changes this to an image
 
             ImageView imageView = view.findViewById(R.id.id_adpater_image);
             imageView.setImageResource(list.get(position).getImg());
@@ -291,6 +310,25 @@ public class MainActivity extends AppCompatActivity {
                     gamesWonText.setText(Integer.toString(list.get(position).gamesWon()));
                     ppgText.setText((Double.toString(list.get(position).getPPG())));
                     efgText.setText(Double.toString(list.get(position).getEFG()));
+                    name = list.get(position).getName();
+                    //creating a notification when the user click on certain cell in the view
+                    //addNotification();
+
+                    Intent activityIntent = new Intent(MainActivity.this,MainActivity.class);
+                    PendingIntent contentIntent = PendingIntent.getActivity(MainActivity.this,
+                            0,activityIntent,0);
+
+
+                    Notification notification = new NotificationCompat.Builder(MainActivity.this,CHANNEL_1_ID)
+                            .setSmallIcon(list.get(position).getImg())
+                            .setContentTitle(list.get(position).getName())
+                            .setContentText(list.get(position).getName() + " has these statistics " + list.get(position).getPPG() + " points per game and " + list.get(position).getEFG() + " is his effective field goal percentage")
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                           // .addAction(R.string.)
+                            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                            .setContentIntent(contentIntent)
+                            .build();
+                    notificationManager.notify(1,notification);
                 }
             });
 
@@ -304,17 +342,26 @@ public class MainActivity extends AppCompatActivity {
                         ppgText.setText(Double.toString(list.get(position).getPPG()));
                         efgText.setText(Double.toString(list.get(position).getEFG()));
                         extraInfo.setText(list.get(position).getMoreInfo());
+
+                        Notification notification = new NotificationCompat.Builder(MainActivity.this,CHANNEL_1_ID)
+                                .setSmallIcon(list.get(position).getImg())
+                                .setContentTitle(list.get(position).getName())
+                                .setContentText(list.get(position).getName() + " has these statistics " + list.get(position).getPPG() + " points per game and " + list.get(position).getEFG() + " is his effective field goal percentage")
+                                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                                .build();
+                        notificationManager.notify(1,notification);
                     }
                 });
             }
 
-            button.setOnClickListener(new View.OnClickListener() {
+            deleteImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     list.remove(position);
                     notifyDataSetChanged();
                 }
-            });
+            });     //change this to an image later
 
             return view;
         }

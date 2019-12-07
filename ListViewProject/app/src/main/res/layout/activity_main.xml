@@ -22,6 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TableLayout
+        android:id="@+id/tableLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -46,7 +47,8 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="Games Won"
-                android:textSize="16sp" />
+                android:textSize="18sp"
+                app:fontFamily="@font/googlefont" />
 
             <TextView
                 android:id="@+id/textView"
@@ -54,14 +56,16 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="Points Per Game"
-                android:textSize="16sp" />
+                android:textSize="18sp"
+                app:fontFamily="@font/googlefont" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="Effective FG"
-                android:textSize="16sp" />
+                android:textSize="18sp"
+                app:fontFamily="@font/googlefont" />
         </TableRow>
 
         <TableRow
@@ -75,7 +79,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="0" />
+                android:text="0"
+                android:textSize="18sp"
+                app:fontFamily="@font/googlefont" />
 
             <TextView
                 android:id="@+id/id_ppg"
@@ -83,7 +89,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="0" />
+                android:text="0"
+                android:textSize="18sp"
+                app:fontFamily="@font/googlefont" />
 
             <TextView
                 android:id="@+id/id_efgtext"
@@ -91,8 +99,11 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="0" />
+                android:text="0"
+                android:textSize="18sp"
+                app:fontFamily="@font/googlefont" />
         </TableRow>
 
     </TableLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,29 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/id_adpater_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="135dp"
+        android:layout_height="62dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@android:drawable/btn_dialog" />
 
     <TextView
         android:id="@+id/id_adapter_name"
         android:layout_width="wrap_content"
-        android:fontFamily="serif"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="TextView" />
+        android:gravity="center"
+        android:text="TextView"
+        android:textSize="20sp"
+        app:fontFamily="@font/googlefont"
+        app:layout_constraintBottom_toBottomOf="@+id/id_adpater_image"
+        app:layout_constraintEnd_toStartOf="@+id/id_adapter_remove_button"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/id_adpater_image"
+        app:layout_constraintTop_toTopOf="@+id/id_adpater_image" />
 
-    <Button
+    <ImageView
         android:id="@+id/id_adapter_remove_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:text="Remove" />
+        app:layout_constraintBottom_toBottomOf="@+id/id_adpater_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/id_adpater_image"
+        app:layout_constraintTop_toTopOf="@+id/id_adpater_image"
+        app:srcCompat="@drawable/deleteimage" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
