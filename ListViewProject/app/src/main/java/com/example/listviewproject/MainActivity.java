@@ -34,6 +34,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     TextView ppgText;
     TextView extraInfo;
     TextView efgText;
+    FloatingActionButton share;
 
     protected void onStart() {
         super.onStart();
@@ -100,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         notificationManager = NotificationManagerCompat.from(this);
+
+        share = findViewById(R.id.id_share);
+
 
         gamesWonText = findViewById(R.id.id_gamesWon);
         ppgText = findViewById(R.id.id_ppg);
@@ -158,6 +164,19 @@ public class MainActivity extends AppCompatActivity {
 
 
 //https://www.basketball-reference.com/friv/mvp.html
+
+        share.setOnClickListener(new View.OnClickListener() {       //change this to what is clicked on the listview at the current time
+            @Override
+            public void onClick(View v) {
+                Log.d("RISHI_ERROR",""+tempPosition);
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = list.get(tempPosition).getMoreInfo();
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, list.get(tempPosition).getName());
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, "Share via"));
+            }
+        });
 
 
     }
