@@ -163,9 +163,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-//https://www.basketball-reference.com/friv/mvp.html
 
-        share.setOnClickListener(new View.OnClickListener() {       //change this to what is clicked on the listview at the current time
+//https://www.basketball-reference.com/friv/mvp.html
+        /*share.setOnClickListener(new View.OnClickListener() {       //change this to what is clicked on the listview at the current time
             @Override
             public void onClick(View v) {
                 Log.d("RISHI_ERROR",""+tempPosition);
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
             }
-        });
+        });*/ //MOVE THIS CODE ONTO A BUTTON IN THE NOTIFICATION
 
 
     }
@@ -300,6 +300,7 @@ public class MainActivity extends AppCompatActivity {
 
             tempPosition = position;
 
+
             LayoutInflater layoutInflater = (LayoutInflater) parentContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);  //sets layout on the screeen
             View view = layoutInflater.inflate(R.layout.adapter_custom, null);
 
@@ -308,6 +309,8 @@ public class MainActivity extends AppCompatActivity {
 
             ImageView imageView = view.findViewById(R.id.id_adpater_image);
             imageView.setImageResource(list.get(position).getImg());
+
+
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -323,7 +326,8 @@ public class MainActivity extends AppCompatActivity {
 
             names.setText(list.get(position).getName());
 
-            view.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {        //portrait mode
+
                 @Override
                 public void onClick(View v) {
                     gamesWonText.setText(Integer.toString(list.get(position).gamesWon()));
@@ -351,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {     //landscape mode
                 extraInfo = findViewById(R.id.id_land_extrainfo);
                 extraInfo.setMovementMethod(new ScrollingMovementMethod());
                 view.setOnClickListener(new View.OnClickListener() {
