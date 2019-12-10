@@ -4,40 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.VideoView;
 
 public class FullPictureActivity extends AppCompatActivity {
 
-    ImageView imageView;
 
-    protected void onStart() {
-        super.onStart();
-        Log.d("tag", "Start");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("tag", "Stop");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("tag", "Destroy");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("tag", "Pause");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("tag", "Resume");
-    }
+    WebView video;
 
     @Override
     public void onTopResumedActivityChanged(boolean isTopResumedActivity) {
@@ -50,8 +27,12 @@ public class FullPictureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_picture);
 
-        imageView = findViewById(R.id.id_new_imageview);
-        imageView.setImageResource(MainActivity.image);
+        video = findViewById(R.id.id_newvideo);
+        video.setWebViewClient(new WebViewClient());
+        video.getSettings().setJavaScriptEnabled(true);
+        video.getSettings().setPluginState(WebSettings.PluginState.ON);
+        video.loadUrl(MainActivity.url);
+
 
     }
 }

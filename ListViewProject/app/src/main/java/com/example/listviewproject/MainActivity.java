@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY2 = "thisisthekey2";
     public static final String KEY3 = "thisisthekey3";
     public static final String IMAGEKEY = "thisbetterworkl";
-    public static int image;
+    public static String url;
     public static int tempPosition;
     public static String name;
 
@@ -124,16 +124,16 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.id_listview);
 
         list = new ArrayList<>();
-        Candidate candidate1 = new Candidate("Giannis Antetokounmpo", 30.9, 17, R.drawable.giannis, "Giannis Antetokounmpo has a 56.5% field goal percentage and plays 31.7 minutes per game", 60.4,false);
-        Candidate candidate2 = new Candidate("James Harden", 38.9, 13, R.drawable.harden, "James Harden has a 43.8% field goal percentage and plays 37.6 minutes per game", 53.7,false);
-        Candidate candidate3 = new Candidate("Luka Doncic", 30.6, 13, R.drawable.luka, "Luka Doncic has a 47.8% field goal percentage and plays 33.7 minutes per game,55.4", 55.4,false);
-        Candidate candidate4 = new Candidate("LeBron James", 25.7, 17, R.drawable.lebron, "LeBron James has a 49.8% field goal percentage and plays 34.7 minutes per game", 54.6,false);
-        Candidate candidate5 = new Candidate("Anthony Davis", 26.1, 17, R.drawable.anthonydavis, "Anthony Davis has a 49.0% field goal percentage and plays 34.2 minutes per game", 51.9,false);
-        Candidate candidate6 = new Candidate("Jimmy Butler", 18.8, 14, R.drawable.jimmy, "Jimmy Butler has a 43.6% field goal percentage and plays 34.1 minutes per game", 47.6,false);
-        Candidate candidate7 = new Candidate("Pascal Siakam", 25.6, 15, R.drawable.pascal, "Pascal Siakam has a 50.3% field goal percentage and plays 33.3 minutes per game", 60.9,false);
-        Candidate candidate8 = new Candidate("Karl-Anthony Towns", 25.9, 10, R.drawable.karl, "Karl-Anthony Towns has a 43.9% field goal percentage and plays 31.2 minutes per game", 47.9,false);
-        Candidate candidate9 = new Candidate("Fred Vanvleet", 18.6, 15, R.drawable.fred, "Fred Vanvleet o has a 45.9% field goal percentage and plays 30.3 minutes per game", 49.6,false);
-        Candidate candidate10 = new Candidate("Joel Embiid", 22.8, 14, R.drawable.joel, "Joel Embiid has a 51.5% field goal percentage and plays 34.2 minutes per game", 52.4,false);
+        Candidate candidate1 = new Candidate("Giannis Antetokounmpo", 30.9, 17, R.drawable.giannis, "Giannis Antetokounmpo has a 56.5% field goal percentage and plays 31.7 minutes per game", 60.4,false,"https://www.youtube.com/watch?v=3MevoSBvNkA");
+        Candidate candidate2 = new Candidate("James Harden", 38.9, 13, R.drawable.harden, "James Harden has a 43.8% field goal percentage and plays 37.6 minutes per game", 53.7,false,"https://www.youtube.com/watch?v=H6u8-AZ0Wb0");
+        Candidate candidate3 = new Candidate("Luka Doncic", 30.6, 13, R.drawable.luka, "Luka Doncic has a 47.8% field goal percentage and plays 33.7 minutes per game,55.4", 55.4,false,"https://www.youtube.com/watch?v=L81XN4_iH2M");
+        Candidate candidate4 = new Candidate("LeBron James", 25.7, 17, R.drawable.lebron, "LeBron James has a 49.8% field goal percentage and plays 34.7 minutes per game", 54.6,false,"https://www.youtube.com/watch?v=E467962fHXQ");
+        Candidate candidate5 = new Candidate("Anthony Davis", 26.1, 17, R.drawable.anthonydavis, "Anthony Davis has a 49.0% field goal percentage and plays 34.2 minutes per game", 51.9,false,"https://www.youtube.com/watch?v=rmCoPHVaPww");
+        Candidate candidate6 = new Candidate("Jimmy Butler", 18.8, 14, R.drawable.jimmy, "Jimmy Butler has a 43.6% field goal percentage and plays 34.1 minutes per game", 47.6,false,"https://www.youtube.com/watch?v=62lrcgTEa6E");
+        Candidate candidate7 = new Candidate("Pascal Siakam", 25.6, 15, R.drawable.pascal, "Pascal Siakam has a 50.3% field goal percentage and plays 33.3 minutes per game", 60.9,false,"https://www.youtube.com/watch?v=bXcY9BqvPSU");
+        Candidate candidate8 = new Candidate("Karl-Anthony Towns", 25.9, 10, R.drawable.karl, "Karl-Anthony Towns has a 43.9% field goal percentage and plays 31.2 minutes per game", 47.9,false,"https://www.youtube.com/watch?v=-61u32zXr5s");
+        Candidate candidate9 = new Candidate("Fred Vanvleet", 18.6, 15, R.drawable.fred, "Fred Vanvleet o has a 45.9% field goal percentage and plays 30.3 minutes per game", 49.6,false,"https://www.youtube.com/watch?v=AAy22CPbxp8");
+        Candidate candidate10 = new Candidate("Joel Embiid", 22.8, 14, R.drawable.joel, "Joel Embiid has a 51.5% field goal percentage and plays 34.2 minutes per game", 52.4,false,"https://www.youtube.com/watch?v=5rcib8A7myY");
 //extra info is going to be field goal percentage and minutes per game
 
         list.add(candidate1);
@@ -210,8 +210,9 @@ public class MainActivity extends AppCompatActivity {
         private String moreInfo;
         private double efg;
         private boolean imgClicked;
+        private String url;
 
-        public Candidate(String name, double ppg, int gamesWon, int img, String moreInfo, double efg, boolean imgClicked) {
+        public Candidate(String name, double ppg, int gamesWon, int img, String moreInfo, double efg, boolean imgClicked, String url) {
 
             this.ppg = ppg;
             this.name = name;
@@ -220,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
             this.moreInfo = moreInfo;
             this.efg = efg;
             this.imgClicked = imgClicked;
+            this.url = url;
 
         }
 
@@ -247,6 +249,9 @@ public class MainActivity extends AppCompatActivity {
 
         public double getPPG() {
             return ppg;
+        }
+        public String getURL(){
+            return url;
         }
 
         public String getName() {
@@ -317,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if(!(list.get(position).getImgClicked())){
                         list.get(position).setImgClicked();
-                        image = list.get(position).getImg();
+                        url = list.get(position).getURL();      //fix this
 ;                    }
                     Intent fullPicture = new Intent(MainActivity.this,FullPictureActivity.class);
                     startActivity(fullPicture);
