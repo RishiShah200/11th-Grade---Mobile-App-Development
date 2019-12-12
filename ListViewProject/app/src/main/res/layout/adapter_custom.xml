@@ -24,7 +24,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="TextView"
-        android:textSize="20sp"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
         app:fontFamily="@font/googlefont"
         app:layout_constraintBottom_toBottomOf="@+id/id_adpater_image"
         app:layout_constraintEnd_toStartOf="@+id/id_adapter_remove_button"
@@ -41,6 +42,6 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/id_adpater_image"
         app:layout_constraintTop_toTopOf="@+id/id_adpater_image"
-        app:srcCompat="@drawable/deleteimage" />
+        app:srcCompat="@drawable/removeimage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
