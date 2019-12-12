@@ -121,6 +121,7 @@
         android:layout_marginRight="8dp"
         android:gravity="center"
         android:scrollbars="vertical"
+        android:text="dd"
         android:textColor="#00FFFFFF"
         android:textSize="20sp"
         app:fontFamily="@font/googlefont"

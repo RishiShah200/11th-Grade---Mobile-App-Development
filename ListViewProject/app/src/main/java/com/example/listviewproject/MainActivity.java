@@ -95,14 +95,14 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.id_listview);
 
         list = new ArrayList<>();
-        Candidate candidate1 = new Candidate("Giannis Antetokounmpo", 30.9, 17, R.drawable.giannis, "Giannis Antetokounmpo has a 56.5% field goal percentage and plays 31.7 minutes per game", 60.4, false, "https://www.youtube.com/watch?v=3MevoSBvNkA");
+        Candidate candidate1 = new Candidate("Giannis Ant", 30.9, 17, R.drawable.giannis, "Giannis Antetokounmpo has a 56.5% field goal percentage and plays 31.7 minutes per game", 60.4, false, "https://www.youtube.com/watch?v=3MevoSBvNkA");
         Candidate candidate2 = new Candidate("James Harden", 38.9, 13, R.drawable.harden, "James Harden has a 43.8% field goal percentage and plays 37.6 minutes per game", 53.7, false, "https://www.youtube.com/watch?v=H6u8-AZ0Wb0");
         Candidate candidate3 = new Candidate("Luka Doncic", 30.6, 13, R.drawable.luka, "Luka Doncic has a 47.8% field goal percentage and plays 33.7 minutes per game,55.4", 55.4, false, "https://www.youtube.com/watch?v=L81XN4_iH2M");
         Candidate candidate4 = new Candidate("LeBron James", 25.7, 17, R.drawable.lebron, "LeBron James has a 49.8% field goal percentage and plays 34.7 minutes per game", 54.6, false, "https://www.youtube.com/watch?v=E467962fHXQ");
         Candidate candidate5 = new Candidate("Anthony Davis", 26.1, 17, R.drawable.anthonydavis, "Anthony Davis has a 49.0% field goal percentage and plays 34.2 minutes per game", 51.9, false, "https://www.youtube.com/watch?v=rmCoPHVaPww");
         Candidate candidate6 = new Candidate("Jimmy Butler", 18.8, 14, R.drawable.jimmy, "Jimmy Butler has a 43.6% field goal percentage and plays 34.1 minutes per game", 47.6, false, "https://www.youtube.com/watch?v=62lrcgTEa6E");
         Candidate candidate7 = new Candidate("Pascal Siakam", 25.6, 15, R.drawable.pascal, "Pascal Siakam has a 50.3% field goal percentage and plays 33.3 minutes per game", 60.9, false, "https://www.youtube.com/watch?v=bXcY9BqvPSU");
-        Candidate candidate8 = new Candidate("Karl-Anthony Towns", 25.9, 10, R.drawable.karl, "Karl-Anthony Towns has a 43.9% field goal percentage and plays 31.2 minutes per game", 47.9, false, "https://www.youtube.com/watch?v=-61u32zXr5s");
+        Candidate candidate8 = new Candidate("Karl Towns", 25.9, 10, R.drawable.karl, "Karl-Anthony Towns has a 43.9% field goal percentage and plays 31.2 minutes per game", 47.9, false, "https://www.youtube.com/watch?v=-61u32zXr5s");
         Candidate candidate9 = new Candidate("Fred Vanvleet", 18.6, 15, R.drawable.fred, "Fred Vanvleet o has a 45.9% field goal percentage and plays 30.3 minutes per game", 49.6, false, "https://www.youtube.com/watch?v=AAy22CPbxp8");
         Candidate candidate10 = new Candidate("Joel Embiid", 22.8, 14, R.drawable.joel, "Joel Embiid has a 51.5% field goal percentage and plays 34.2 minutes per game", 52.4, false, "https://www.youtube.com/watch?v=5rcib8A7myY");
 //extra info is going to be field goal percentage and minutes per game
@@ -118,19 +118,6 @@ public class MainActivity extends AppCompatActivity {
         list.add(candidate9);
         list.add(candidate10);
 
-        if (savedInstanceState != null) {
-            list = savedInstanceState.getParcelableArrayList("List");
-            ppgText.setText(savedInstanceState.getString(KEY));
-            gamesWonText.setText(savedInstanceState.getString(KEY2));
-            efgText.setText(savedInstanceState.getString(KEY3));
-            /*if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && extraInfo.getText().toString().length() > 0) {
-                Log.d("BIGBOI", "RETREIVING" + tempMoreInfoString);
-                extraInfo.setText(savedInstanceState.getString(moreinfoKEY));
-            }   //it is only retrieving if it is in landscape mode. CHANGE THIS make it retrieve in portrait mode*/
-        }
-
-        CustomAdapter customAdapter = new CustomAdapter(this, R.layout.adapter_custom, list);
-        listView.setAdapter(customAdapter);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
         } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -139,6 +126,27 @@ public class MainActivity extends AppCompatActivity {
             extraInfo.setTextColor(Color.WHITE);
 
         }
+
+
+
+        if (savedInstanceState != null) {
+            list = savedInstanceState.getParcelableArrayList("List");
+            ppgText.setText(savedInstanceState.getString(KEY));
+            gamesWonText.setText(savedInstanceState.getString(KEY2));
+            efgText.setText(savedInstanceState.getString(KEY3));
+        //    Log.d("BIGBOI", "RETREIVING" + savedInstanceState.getString(moreinfoKEY));
+
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && extraInfo.getText().toString().length() > 1) {
+                Log.d("BIGBOI", "RETREIVING" + savedInstanceState.getString(moreinfoKEY));
+                extraInfo.setText(savedInstanceState.getString(moreinfoKEY));
+            }   //it is only retrieving if it is in landscape mode. CHANGE THIS make it retrieve in portrait mode*/
+        }
+
+        CustomAdapter customAdapter = new CustomAdapter(this, R.layout.adapter_custom, list);
+        listView.setAdapter(customAdapter);
+
+
+
 
 
 
@@ -169,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
         outState.putString(KEY, (String) ppgText.getText());
         outState.putString(KEY2, (String) gamesWonText.getText());
         outState.putString(KEY3, (String) efgText.getText());
-        outState.putInt(IMAGEKEY, list.get(tempPosition).getImg());
+       // outState.putInt(moreinfoKEY,tempPosition);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && extraInfo.getText().toString().length() > 0) {
             Log.d("BIGBOI", "SAVING" + tempMoreInfoString);
             outState.putString(moreinfoKEY, tempMoreInfoString);
@@ -303,6 +311,18 @@ public class MainActivity extends AppCompatActivity {
             ImageView imageView = view.findViewById(R.id.id_adpater_image);
             imageView.setImageResource(list.get(position).getImg());
 
+            ImageView share = view.findViewById(R.id.id_share);
+            share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    sharingIntent.setType("text/plain");
+                    String shareBody = list.get(position).getMoreInfo();
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, list.get(position).getName());
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                    startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                }
+            });
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -365,7 +385,6 @@ public class MainActivity extends AppCompatActivity {
             });
 
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {     //landscape mode
-                // extraInfo = findViewById(R.id.id_land_extrainfo);
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -374,6 +393,7 @@ public class MainActivity extends AppCompatActivity {
                         efgText.setText(Double.toString(list.get(position).getEFG()));
                         extraInfo.setText(list.get(position).getMoreInfo());
                         tempMoreInfoString = list.get(position).getMoreInfo();
+                        Log.d("BIGBOI","THIS IS WHAT THE STRING IS"+tempMoreInfoString);
 
                         Intent activityIntent = new Intent(MainActivity.this, MainActivity.class);
                         PendingIntent contentIntent = PendingIntent.getActivity(MainActivity.this,

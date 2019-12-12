@@ -44,4 +44,15 @@
         app:layout_constraintTop_toTopOf="@+id/id_adpater_image"
         app:srcCompat="@drawable/removeimage" />
 
+    <ImageView
+        android:id="@+id/id_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/id_adapter_name"
+        app:layout_constraintEnd_toStartOf="@+id/id_adapter_remove_button"
+        app:layout_constraintStart_toEndOf="@+id/id_adapter_name"
+        app:layout_constraintTop_toTopOf="@+id/id_adapter_name"
+        app:srcCompat="?attr/actionModeShareDrawable" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
