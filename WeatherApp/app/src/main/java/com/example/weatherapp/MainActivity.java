@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     String zipcode;
     Button submitzipcode;
 
+    String currentTemp = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
             try{
                 Log.d("INFORMATION",info);
                 JSONObject weatherData = new JSONObject(info);
+                currentTemp = weatherData.getJSONArray("list").getJSONObject(1).getJSONObject("main").getDouble("temp") + "";
+                Log.d("WEATHER",currentTemp);
+
             }catch (Exception e){
 
             }
