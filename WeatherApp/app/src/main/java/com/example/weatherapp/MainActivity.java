@@ -1,13 +1,29 @@
 package com.example.weatherapp;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.Activity;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.JsonReader;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,6 +38,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,21 +72,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView currentWeatherConditions;
     String currentWeatherInfo;
 
-    TextView hour1maxtemp;
-    TextView hour2maxtemp;
-    TextView hour3maxtemp;
-    TextView hour4maxtemp;
-    TextView hour5maxtemp;
-    TextView hour1lowtemp;
-    TextView hour2lowtemp;
-    TextView hour3lowtemp;
-    TextView hour4lowtemp;
-    TextView hour5lowtemp;
-    ImageView hour1image;
-    ImageView hour2image;
-    ImageView hour3image;
-    ImageView hour4image;
-    ImageView hour5image;
+
     String forecastInfo;
 
     JSONObject forecastData;
@@ -77,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
     String formattedDate;
 
     DecimalFormat df = new DecimalFormat("#,###,##0.00");
+
+    ArrayList<Weather> listWeather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,17 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
         currentTemp = findViewById(R.id.id_currenttemp);
 
-        hour1maxtemp = findViewById(R.id.hour1maxtemp);
-        hour2maxtemp = findViewById(R.id.hour2maxtemp);
-        hour3maxtemp = findViewById(R.id.hour3maxtemp);
-        hour4maxtemp = findViewById(R.id.hour4maxtemp);
-        hour5maxtemp = findViewById(R.id.hour5maxtemp);
 
-        hour1lowtemp = findViewById(R.id.hour1lowtemp);
-        hour2lowtemp = findViewById(R.id.hour2lowtemp);
-        hour3lowtemp = findViewById(R.id.hour3lowtemp);
-        hour4lowtemp = findViewById(R.id.hour4lowtemp);
-        hour5lowtemp = findViewById(R.id.hour5lowtemp);
 
         currentHighTemp = findViewById(R.id.id_currentHighTemp);
         currentLowTemp = findViewById(R.id.id_currentLowTemp);
@@ -110,10 +105,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 sendZipCodeToThread = charSequence.toString();
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
             }
@@ -145,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
                     info += text;
                 }
 
+                Log.d("INFORMATION",info);
+
                 url2 = new URL("http://api.openweathermap.org/data/2.5/weather?zip=" + zipcode + ",us&appid=ece003293f26ba768ee74719308fc712");
                 connection2 = url2.openConnection();
                 stream2 = connection2.getInputStream();
@@ -158,10 +157,12 @@ public class MainActivity extends AppCompatActivity {
                 forecastData = new JSONObject(info);
                 weatherData = new JSONObject(info2);
                 long unixSeconds = weatherData.getLong("dt");
+                Log.d("INFORMATION",info2);
                 Date date = new java.util.Date(unixSeconds * 1000L);
                 SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getDateTimeInstance();
                 sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT-5"));
                 formattedDate = sdf.format(date);
+                currentTime.setText(formattedDate);
 
             } catch (Exception e) {
 
@@ -170,24 +171,14 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
 
+
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             try {        //for the 5 day forecast
 
-                hour1maxtemp.setText("High: " + df.format(convertTemp(forecastData.getJSONArray("list").getJSONObject(0).getJSONObject("main").getDouble("temp_max"))) + "°F");
-                hour2maxtemp.setText("High: " + df.format(convertTemp(forecastData.getJSONArray("list").getJSONObject(1).getJSONObject("main").getDouble("temp_max"))) + "°F");
-                hour3maxtemp.setText("High: " + df.format(convertTemp(forecastData.getJSONArray("list").getJSONObject(2).getJSONObject("main").getDouble("temp_max"))) + "°F");
-                hour4maxtemp.setText("High: " + df.format(convertTemp(forecastData.getJSONArray("list").getJSONObject(3).getJSONObject("main").getDouble("temp_max"))) + "°F");
-                hour5maxtemp.setText("High: " + df.format(convertTemp(forecastData.getJSONArray("list").getJSONObject(4).getJSONObject("main").getDouble("temp_max"))) + "°F");
-
-                hour1lowtemp.setText("Low: " + df.format(convertTemp(forecastData.getJSONArray("list").getJSONObject(0).getJSONObject("main").getDouble("temp_min"))) + "°F");
-                hour2lowtemp.setText("Low: " + df.format(convertTemp(forecastData.getJSONArray("list").getJSONObject(1).getJSONObject("main").getDouble("temp_min"))) + "°F");
-                hour3lowtemp.setText("Low: " + df.format(convertTemp(forecastData.getJSONArray("list").getJSONObject(2).getJSONObject("main").getDouble("temp_min"))) + "°F");
-                hour4lowtemp.setText("Low: " + df.format(convertTemp(forecastData.getJSONArray("list").getJSONObject(3).getJSONObject("main").getDouble("temp_min"))) + "°F");
-                hour5lowtemp.setText("Low: " + df.format(convertTemp(forecastData.getJSONArray("list").getJSONObject(4).getJSONObject("main").getDouble("temp_min"))) + "°F");
-
                 currentTime.setText(formattedDate);
+                Log.d("INFORMATION",df.format(convertTemp(weatherData.getJSONObject("main").getDouble("temp"))) + "°F");
 
                 currentTemp.setText(df.format(convertTemp(weatherData.getJSONObject("main").getDouble("temp"))) + "°F");
                 currentHighTemp.setText("Day " + df.format(convertTemp(weatherData.getJSONObject("main").getDouble("temp_max"))) + "°F");
@@ -196,9 +187,8 @@ public class MainActivity extends AppCompatActivity {
 
                 forecastInfo = forecastData.getJSONArray("list").getJSONObject(0).getJSONArray("weather").getJSONObject(0).getString("icon");       //fix this
 
-                decideImage(currentWeatherInfo,currentWeatherConditions);
-                Log.d("INFORMATION",forecastInfo);
-                decideImage(forecastInfo,hour1image);
+                Log.d("INFORMATION", forecastInfo);
+
 
             } catch (Exception e) {
 
@@ -211,67 +201,170 @@ public class MainActivity extends AppCompatActivity {
         return (weather - 273.15) * 9 / 5 + 32;
     }
 
-    public void decideImage(String s, ImageView v){
-        switch (s) {   //use this https://www.iconfinder.com/iconsets/weather-color-2
-            case "01d":
-                v.setImageResource(R.drawable.ic_clearsky);
-                break;
-            case "02d":
-                v.setImageResource(R.drawable.ic_fewclouds);
-                break;
-            case "03d":
-                v.setImageResource(R.drawable.scatteredclouds);
-                break;
-            case "04d":
-                v.setImageResource(R.drawable.brokenclouds);
-                break;
-            case "09d":
-                v.setImageResource(R.drawable.showerrain);
-                break;
-            case "10d":
-                v.setImageResource(R.drawable.rain);
-                break;
-            case "11d":
-                v.setImageResource(R.drawable.thunderstorm);
-                break;
-            case "13d":
-                v.setImageResource(R.drawable.snow);
-                break;
-            case "50d":
-                v.setImageResource(R.drawable.mist);
-                break;
-            case "01n":
-                v.setImageResource(R.drawable.ic_clearskynight);
-                break;
-            case "02n":
-                v.setImageResource(R.drawable.ic_fewclouds);
-                break;
-            case "03n":
-                v.setImageResource(R.drawable.scatteredclouds);
-                break;
-            case "04n":
-                v.setImageResource(R.drawable.brokenclouds);
-                break;
-            case "09n":
-                v.setImageResource(R.drawable.showerrain);
-                break;
-            case "10n":
-                v.setImageResource(R.drawable.rain);
-                break;
-            case "11n":
-                v.setImageResource(R.drawable.thunderstorm);
-                break;
-            case "13n":
-                v.setImageResource(R.drawable.snow);
-                break;
-            case "50n":
-                v.setImageResource(R.drawable.mist);
-                break;
-            default:
-                v.setImageResource(R.drawable.ic_launcher_background);
-                break;
+
+    public class Weather {
+        private Date date;
+        private int temp;
+        private int tempMin;
+        private int tempMax;
+        private String icon;
+        private String description;
+
+        public Weather(JSONObject json) {
+            try {
+                long unixTime = json.getLong("dt");
+                date = new Date(unixTime * 1000);
+                temp = (int) Math.round(json.getJSONObject("main").getDouble("temp"));
+                tempMin = (int) Math.round(json.getJSONObject("main").getDouble("temp_min"));
+                tempMax = (int) Math.round(json.getJSONObject("main").getDouble("temp_max"));
+                icon = json.getJSONArray("weather").getJSONObject(0).getString("icon");
+                description = json.getJSONArray("weather").getJSONObject(0).getString("description");
+                String[] words = description.split(" ");
+                description = "";
+                for (String word : words) {
+                    word = word.substring(0, 1).toUpperCase() + word.substring(1);
+                    description += word + " ";
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
+        public Date getDate() {
+            return date;
+        }
+
+        public String getFormattedDate(String format) {
+            SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getDateTimeInstance();
+            sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT-5"));
+            String formattedDate = sdf.format(date);
+            return formattedDate;
+        }
+
+        public int getTemp() {
+            return temp;
+        }
+
+        public int getTempMin() {
+            return tempMin;
+        }
+
+        public int getTempMax() {
+            return tempMax;
+        }
+
+        public String getIcon() {
+            return icon;
+        }
+
+        public int getImage() {
+            int image = 0;
+            switch (icon) {
+                case "01d":
+                    image = R.drawable.ic_clearsky;
+                    break;
+                case "02d":
+                    image = R.drawable.ic_fewclouds;
+                    break;
+                case "03d":
+                    image = R.drawable.scatteredclouds;
+                    break;
+                case "04d":
+                    image = R.drawable.brokenclouds;
+                    break;
+                case "09d":
+                    image = R.drawable.showerrain;
+                    break;
+                case "10d":
+                    image = R.drawable.rain;
+                    break;
+                case "11d":
+                    image = R.drawable.thunderstorm;
+                    break;
+                case "13d":
+                    image  = (R.drawable.snow);
+                    break;
+                case "50d":
+                    image = (R.drawable.mist);
+                    break;
+                case "01n":
+                    image = (R.drawable.ic_clearskynight);
+                    break;
+                case "02n":
+                    image = (R.drawable.ic_fewclouds);
+                    break;
+                case "03n":
+                    image = (R.drawable.scatteredclouds);
+                    break;
+                case "04n":
+                    image = (R.drawable.brokenclouds);
+                    break;
+                case "09n":
+                    image = (R.drawable.showerrain);
+                    break;
+                case "10n":
+                    image = (R.drawable.rain);
+                    break;
+                case "11n":
+                    image = (R.drawable.thunderstorm);
+                    break;
+                case "13n":
+                    image = (R.drawable.snow);
+                    break;
+                case "50n":
+                    image = (R.drawable.mist);
+                    break;
+                default:
+                    image = (R.drawable.ic_launcher_background);
+                    break;
+            }
+            return image;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public String getQuotation() {
+            String quotation = "";
+            return quotation;
+        }
+
     }
 
+
+    public class CustomAdapter extends ArrayAdapter<Weather> {
+
+        ArrayList<Weather> list;
+        Context parentContext;
+        int xmlResource;
+
+
+        public CustomAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Weather> objects) {
+            super(context, resource, objects);
+
+            list = objects;
+            parentContext = context;
+            xmlResource = resource;
+        }
+
+        @NonNull
+        @Override
+        public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+            LayoutInflater layoutInflater = (LayoutInflater) parentContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);  //sets layout on the screeen
+            View view = layoutInflater.inflate(R.layout.adapter_custom, null);
+
+            TextView date = view.findViewById(R.id.date);
+            ImageView image = view.findViewById(R.id.image);
+            TextView description = view.findViewById(R.id.description);
+            TextView tempMin = view.findViewById(R.id.tempMin);
+            TextView tempMax = view.findViewById(R.id.tempMax);
+
+
+            return view;
+        }
+
+    }
 
 }
