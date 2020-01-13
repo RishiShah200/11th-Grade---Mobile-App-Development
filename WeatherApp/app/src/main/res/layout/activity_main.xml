@@ -111,35 +111,35 @@
             android:gravity="center">
 
             <TextView
-                android:id="@+id/day1maxtemp"
+                android:id="@+id/hour1maxtemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/day2maxtemp"
+                android:id="@+id/hour2maxtemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/day3tmaxemp"
+                android:id="@+id/hour3maxtemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/day4maxtemp"
+                android:id="@+id/hour4maxtemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/day5maxtemp"
+                android:id="@+id/hour5maxtemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
@@ -152,35 +152,35 @@
             android:gravity="center">
 
             <TextView
-                android:id="@+id/day1lowtemp"
+                android:id="@+id/hour1lowtemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/day2lowtemp"
+                android:id="@+id/hour2lowtemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/day3lowtemp"
+                android:id="@+id/hour3lowtemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/day4lowtemp"
+                android:id="@+id/hour4lowtemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/day5lowtemp"
+                android:id="@+id/hour5lowtemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
@@ -193,35 +193,35 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/day1image"
+                android:id="@+id/hour1image"
                 android:layout_width="74dp"
                 android:layout_height="76dp"
                 android:padding="6dp"
                 app:srcCompat="@mipmap/ic_launcher" />
 
             <ImageView
-                android:id="@+id/day2image"
+                android:id="@+id/hour2image"
                 android:layout_width="74dp"
                 android:layout_height="76dp"
                 android:padding="6dp"
                 app:srcCompat="@mipmap/ic_launcher" />
 
             <ImageView
-                android:id="@+id/day3image"
+                android:id="@+id/hour3image"
                 android:layout_width="74dp"
                 android:layout_height="76dp"
                 android:padding="6dp"
                 app:srcCompat="@mipmap/ic_launcher" />
 
             <ImageView
-                android:id="@+id/day4image"
+                android:id="@+id/hour4image"
                 android:layout_width="74dp"
                 android:layout_height="76dp"
                 android:padding="6dp"
                 app:srcCompat="@mipmap/ic_launcher" />
 
             <ImageView
-                android:id="@+id/day5image"
+                android:id="@+id/hour5image"
                 android:layout_width="74dp"
                 android:layout_height="76dp"
                 android:padding="6dp"
