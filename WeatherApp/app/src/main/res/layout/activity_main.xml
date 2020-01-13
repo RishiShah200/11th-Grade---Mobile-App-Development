@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#101516"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
@@ -11,40 +12,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="TextView"
+        android:textColor="#E6E7E8"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/id_currentHighTemp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/id_currentHighTemp"
-        app:layout_constraintTop_toTopOf="@+id/id_currentHighTemp" />
+        app:layout_constraintTop_toTopOf="@+id/id_currentHighTemp"
+        tools:text="LOW" />
 
     <EditText
         android:id="@+id/id_zipcode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
         android:ems="10"
         android:hint="Enter ZipCode Here"
-        android:inputType="textPersonName"
+        android:inputType="number"
+        android:textColor="#E6E7E8"
+        android:textColorHint="#E6E7E8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/id_submitzipcode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="@+id/id_zipcode"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/id_zipcode"
-        app:layout_constraintTop_toTopOf="@+id/id_zipcode" />
+        app:layout_constraintVertical_bias="0.110000014" />
 
     <ImageView
         android:id="@+id/currentweatherimage"
@@ -55,45 +45,89 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.22000003"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:layout_constraintVertical_bias="0.24000001"
+        tools:srcCompat="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/id_currenttemp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:textColor="#E6E7E8"
         android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="@+id/currentweatherimage"
         app:layout_constraintEnd_toStartOf="@+id/currentweatherimage"
         app:layout_constraintHorizontal_bias="0.39"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/currentweatherimage" />
+        app:layout_constraintTop_toTopOf="@+id/currentweatherimage"
+        app:layout_constraintVertical_bias="0.92"
+        tools:text="TEMP" />
 
     <TextView
         android:id="@+id/id_currentHighTemp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="TextView"
+        android:textColor="#E6E7E8"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/id_currenttemp"
         app:layout_constraintStart_toStartOf="@+id/id_currenttemp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/id_zipcode"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="HIGH" />
 
     <TextView
         android:id="@+id/id_currentTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="TextView"
+        android:textColor="#E6E7E8"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/id_currentHighTemp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/id_currenttemp"
+        app:layout_constraintTop_toBottomOf="@+id/id_zipcode"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="CURRENT TIME" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="330dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/cityname"
+        android:layout_width="335dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="4dp"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="#E6E7E8"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/id_zipcode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="CITY NAME" />
+
+    <ImageView
+        android:id="@+id/submitzipcode"
+        android:layout_width="54dp"
+        android:layout_height="53dp"
+        app:layout_constraintBottom_toBottomOf="@+id/id_zipcode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/id_zipcode"
+        app:layout_constraintTop_toTopOf="@+id/id_zipcode"
+        app:srcCompat="@drawable/search" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

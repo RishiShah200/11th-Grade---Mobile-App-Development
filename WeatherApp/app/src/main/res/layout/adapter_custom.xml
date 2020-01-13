@@ -3,11 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
+    android:background="#141D27"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
     <TextView
         android:id="@+id/date"
+        android:textColor="#00ACC1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
@@ -24,38 +26,43 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="TextView"
+        android:textColor="#E6E7E8"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04000002" />
+        app:layout_constraintTop_toBottomOf="@+id/date"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tempMax"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textColor="#E6E7E8"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/description"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/description"
-        app:layout_constraintTop_toTopOf="@+id/description" />
+        app:layout_constraintEnd_toStartOf="@+id/tempMin"
+        app:layout_constraintTop_toTopOf="@+id/description"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tempMin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
+        android:layout_marginEnd="8dp"
         android:text="TextView"
+        android:textColor="#939598"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/tempMax"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/tempMax"
-        app:layout_constraintTop_toTopOf="@+id/tempMax" />
+        app:layout_constraintTop_toTopOf="@+id/tempMax"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         app:layout_constraintBottom_toBottomOf="@+id/description"
         app:layout_constraintEnd_toStartOf="@+id/description"
         app:layout_constraintStart_toStartOf="parent"

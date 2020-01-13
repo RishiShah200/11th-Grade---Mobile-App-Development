@@ -14,6 +14,11 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,12 +28,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -40,6 +48,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText zipCodeFinder;
     String zipcode;
-    Button submitzipcode;
+    ImageView submitzipcode;
     String sendZipCodeToThread = "";
 
 
@@ -82,24 +92,32 @@ public class MainActivity extends AppCompatActivity {
     DecimalFormat df = new DecimalFormat("#,###,##0.00");
 
     ArrayList<Weather> listWeather;
+    ListView listView;
+
+    String cityname;
+    TextView city;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        city = findViewById(R.id.cityname);
+
         zipCodeFinder = findViewById(R.id.id_zipcode);
-        submitzipcode = findViewById(R.id.id_submitzipcode);
+        submitzipcode = findViewById(R.id.submitzipcode);
 
         currentTemp = findViewById(R.id.id_currenttemp);
 
-
+        listView = findViewById(R.id.listView);
 
         currentHighTemp = findViewById(R.id.id_currentHighTemp);
         currentLowTemp = findViewById(R.id.id_currentLowTemp);
         currentTime = findViewById(R.id.id_currentTime);
 
         currentWeatherConditions = findViewById(R.id.currentweatherimage);
+
+        listWeather = new ArrayList<Weather>();
 
         zipCodeFinder.addTextChangedListener(new TextWatcher() {
             @Override
@@ -119,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new AsyncThread().execute(sendZipCodeToThread);
+                zipCodeFinder.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                zipCodeFinder.setCursorVisible(false);
             }
         });
     }
@@ -142,8 +162,6 @@ public class MainActivity extends AppCompatActivity {
                     info += text;
                 }
 
-                Log.d("INFORMATION",info);
-
                 url2 = new URL("http://api.openweathermap.org/data/2.5/weather?zip=" + zipcode + ",us&appid=ece003293f26ba768ee74719308fc712");
                 connection2 = url2.openConnection();
                 stream2 = connection2.getInputStream();
@@ -162,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
                 SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getDateTimeInstance();
                 sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT-5"));
                 formattedDate = sdf.format(date);
-                currentTime.setText(formattedDate);
 
             } catch (Exception e) {
 
@@ -177,18 +194,28 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             try {        //for the 5 day forecast
 
-                currentTime.setText(formattedDate);
-                Log.d("INFORMATION",df.format(convertTemp(weatherData.getJSONObject("main").getDouble("temp"))) + "°F");
+                JSONArray forecast = forecastData.getJSONArray("list");
+                Log.d("FORECASE",forecast.toString());
 
-                currentTemp.setText(df.format(convertTemp(weatherData.getJSONObject("main").getDouble("temp"))) + "°F");
-                currentHighTemp.setText("Day " + df.format(convertTemp(weatherData.getJSONObject("main").getDouble("temp_max"))) + "°F");
-                currentLowTemp.setText("Night " + df.format(convertTemp(weatherData.getJSONObject("main").getDouble("temp_min"))) + "°F");
+                for(int x = 0;x<forecast.length();x++){
+                    JSONObject object = forecast.getJSONObject(x);
+                    listWeather.add(new Weather(object));
+                }
+
+                CustomAdapter customAdapter = new CustomAdapter(MainActivity.this,R.layout.adapter_custom,listWeather);
+                listView.setAdapter(customAdapter);
+
+                currentTime.setText(formattedDate);
+
+                cityname = weatherData.getString("name");
+                city.setText(cityname);
+
+                currentTemp.setText(df.format(convertTemp((int)(weatherData.getJSONObject("main").getDouble("temp")))) + "°F");
+                currentHighTemp.setText("Day " + df.format(convertTemp((int)(weatherData.getJSONObject("main").getDouble("temp_max")))) + "°F");
+                currentLowTemp.setText("Night " + df.format(convertTemp((int)(weatherData.getJSONObject("main").getDouble("temp_min")))) + "°F");
                 currentWeatherInfo = weatherData.getJSONArray("weather").getJSONObject(0).getString("icon");
 
-                forecastInfo = forecastData.getJSONArray("list").getJSONObject(0).getJSONArray("weather").getJSONObject(0).getString("icon");       //fix this
-
-                Log.d("INFORMATION", forecastInfo);
-
+                decideImage(currentWeatherInfo,currentWeatherConditions);
 
             } catch (Exception e) {
 
@@ -197,9 +224,72 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public double convertTemp(double weather) {
-        return (weather - 273.15) * 9 / 5 + 32;
+    public int convertTemp(int weather) {
+        return (weather - 273) * 9 / 5 + 32;
     }
+
+    public void decideImage(String s, ImageView v) {
+        switch (s) {   //use this https://www.iconfinder.com/iconsets/weather-color-2
+            case "01d":
+                v.setImageResource(R.drawable.ic_clearsky);
+                break;
+            case "02d":
+                v.setImageResource(R.drawable.ic_fewclouds);
+                break;
+            case "03d":
+                v.setImageResource(R.drawable.scatteredclouds);
+                break;
+            case "04d":
+                v.setImageResource(R.drawable.brokenclouds);
+                break;
+            case "09d":
+                v.setImageResource(R.drawable.showerrain);
+                break;
+            case "10d":
+                v.setImageResource(R.drawable.rain);
+                break;
+            case "11d":
+                v.setImageResource(R.drawable.thunderstorm);
+                break;
+            case "13d":
+                v.setImageResource(R.drawable.snow);
+                break;
+            case "50d":
+                v.setImageResource(R.drawable.mist);
+                break;
+            case "01n":
+                v.setImageResource(R.drawable.ic_clearskynight);
+                break;
+            case "02n":
+                v.setImageResource(R.drawable.ic_fewclouds);
+                break;
+            case "03n":
+                v.setImageResource(R.drawable.scatteredclouds);
+                break;
+            case "04n":
+                v.setImageResource(R.drawable.brokenclouds);
+                break;
+            case "09n":
+                v.setImageResource(R.drawable.showerrain);
+                break;
+            case "10n":
+                v.setImageResource(R.drawable.rain);
+                break;
+            case "11n":
+                v.setImageResource(R.drawable.thunderstorm);
+                break;
+            case "13n":
+                v.setImageResource(R.drawable.snow);
+                break;
+            case "50n":
+                v.setImageResource(R.drawable.mist);
+                break;
+            default:
+                v.setImageResource(R.drawable.ic_launcher_background);
+                break;
+        }
+    }
+
 
 
     public class Weather {
@@ -234,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
             return date;
         }
 
-        public String getFormattedDate(String format) {
+        public String getFormattedDate() {
             SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getDateTimeInstance();
             sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT-5"));
             String formattedDate = sdf.format(date);
@@ -360,6 +450,14 @@ public class MainActivity extends AppCompatActivity {
             TextView description = view.findViewById(R.id.description);
             TextView tempMin = view.findViewById(R.id.tempMin);
             TextView tempMax = view.findViewById(R.id.tempMax);
+
+            Weather weather = list.get(position);
+            date.setText(weather.getFormattedDate());
+
+            description.setText(weather.getDescription());
+            tempMax.setText(convertTemp(weather.getTempMax()) + "°");
+            tempMin.setText("/" + convertTemp(weather.getTempMin()) + "°");
+            image.setImageResource(weather.getImage());
 
 
             return view;
