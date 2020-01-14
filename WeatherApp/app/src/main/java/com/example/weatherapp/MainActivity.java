@@ -3,18 +3,22 @@ package com.example.weatherapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -35,6 +39,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -96,13 +101,75 @@ public class MainActivity extends AppCompatActivity {
 
     String cityname;
     TextView city;
+    TextView quote;
+
+    Double latitude;
+    Double longitude;
+    static String TAG = "MainActivity";
+    Location gps_loc = null,network_loc=null,final_loc = null;
+    String locationZipCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED){
+
+            Toast.makeText(this,"not granted",Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this,"granted",Toast.LENGTH_SHORT).show();
+        }
+
+        try{
+            Criteria locationCriteria = new Criteria();
+            String providerName = locationManager.getBestProvider(locationCriteria,true);
+            gps_loc = locationManager.getLastKnownLocation(providerName);
+            network_loc = locationManager.getLastKnownLocation(providerName);
+        }catch(Exception e){
+
+        }
+
+        if(gps_loc!=null){
+            final_loc = gps_loc;
+            latitude = final_loc.getLatitude();
+            longitude = final_loc.getLongitude();
+        }
+        else if(network_loc != null){
+            final_loc = network_loc;
+            latitude = final_loc.getLatitude();
+            longitude = final_loc.getLongitude();
+        }
+        else{
+            latitude = 0.0;
+            longitude = 0.0;
+        }
+
+
+        try{
+            Geocoder geocoder = new Geocoder(getApplicationContext(),Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(latitude,longitude,1);
+            if (addresses != null && addresses.size() > 0) {
+                String address = addresses.get(0).getAddressLine(0);
+                String city = addresses.get(0).getLocality();
+                String state = addresses.get(0).getAdminArea();
+                String country = addresses.get(0).getCountryName();
+                String postal_code = addresses.get(0).getPostalCode();
+                locationZipCode = postal_code;
+                String knownName = addresses.get(0).getFeatureName();
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         city = findViewById(R.id.cityname);
+
+        quote = findViewById(R.id.quote);
 
         zipCodeFinder = findViewById(R.id.id_zipcode);
         submitzipcode = findViewById(R.id.submitzipcode);
@@ -133,6 +200,13 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
             }
         });
+
+        Log.d("ZIPCODE",locationZipCode);
+        if(locationZipCode.length() > 3){
+            sendZipCodeToThread = locationZipCode;
+            new AsyncThread().execute(sendZipCodeToThread);
+            zipCodeFinder.onEditorAction(EditorInfo.IME_ACTION_DONE);
+        }
         submitzipcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,6 +289,61 @@ public class MainActivity extends AppCompatActivity {
                 currentLowTemp.setText("Night " + df.format(convertTemp((int)(weatherData.getJSONObject("main").getDouble("temp_min")))) + "°F");
                 currentWeatherInfo = weatherData.getJSONArray("weather").getJSONObject(0).getString("icon");
 
+                if (currentWeatherInfo.equals("01d")){
+                    quote.setText("You never know the true value of the sun until it becomes a memory \n -Spongebob");
+                }
+                else if(currentWeatherInfo.equals("02d")){
+                    quote.setText("Hey Patrick, I thought of something funnier than clouds...few clouds!");
+                }
+                else if(currentWeatherInfo.equals("03d")){
+                    quote.setText("Well, it may be cloudy, but it's also daytime");
+                }
+                else if(currentWeatherInfo.equals("04d")){
+
+                }
+                else if(currentWeatherInfo.equals("09d")){
+
+                }
+                else if(currentWeatherInfo.equals("10d")){
+                    quote.setText("Rain cannot replace friendship. \n - Patrick");
+                }
+                else if(currentWeatherInfo.equals("11d")){
+
+                }
+                else if(currentWeatherInfo.equals("13d")){
+                    quote.setText("Once there was snow. There was so much that everyone died...the end");
+                }
+                else if(currentWeatherInfo.equals("50n")){
+                    quote.setText("Too bad mist is not here to enjoy mist not being here \n -Squidward");
+                }
+                else if(currentWeatherInfo.equals("01n")){
+                    Log.d("REACHED","RECHED");
+                    quote.setText("You don't need the sun to drive \n -Spongebob");
+                }
+                else if(currentWeatherInfo.equals("02n")){
+                    quote.setText("Hey Patrick, I thought of something funnier than clouds...few clouds!");
+                }
+                else if(currentWeatherInfo.equals("03n")){
+
+                }
+                else if(currentWeatherInfo.equals("04n")){
+
+                }
+                else if(currentWeatherInfo.equals("09n")){
+                    quote.setText("This is not your average, everyday rain shower. This is...ADVANCED rain shower.");
+                }
+                else if(currentWeatherInfo.equals("10n")){
+                    quote.setText("Rain cannot replace friendship. \n - Patrick");
+                }
+                else if(currentWeatherInfo.equals("11n")){
+
+                }
+                else if(currentWeatherInfo.equals("13n")){
+
+                }
+                else if(currentWeatherInfo.equals("50n")){
+                    quote.setText("Remember, mist is illegal on other planets.");
+                }
                 decideImage(currentWeatherInfo,currentWeatherConditions);
 
             } catch (Exception e) {
@@ -290,8 +419,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
     public class Weather {
         private Date date;
         private int temp;
@@ -334,6 +461,65 @@ public class MainActivity extends AppCompatActivity {
         public int getTemp() {
             return temp;
         }
+
+        /*public String getQuotation(){
+            if (icon.equals("01d")){
+                return "You never know the true value of the sun until it becomes a memory /n -Spongebob";
+            }
+            else if(icon.equals("02d")){
+                return "Hey Patrick, I thought of something funnier than clouds...few clouds!";
+            }
+            else if(icon.equals("03d")){
+                return "Well, it may be cloudy, but it's also daytime";
+            }
+            else if(icon.equals("04d")){
+
+            }
+            else if(icon.equals("09d")){
+
+            }
+            else if(icon.equals("10d")){
+                return "Rain cannot replace friendship. /n - Patrick";
+            }
+            else if(icon.equals("11d")){
+
+            }
+            else if(icon.equals("13d")){
+                return "Once there was snow. There was so much that everyone died...the end";
+            }
+            else if(icon.equals("50n")){
+                return "Too bad mist is not here to enjoy mist not being here /n -Squidward";
+            }
+            else if(icon.equals("01n")){
+                Log.d("REACHED","RECHED");
+                return "You don't need the sun to drive /n -Spongebob";
+            }
+            else if(icon.equals("02n")){
+                return "Hey Patrick, I thought of something funnier than clouds...few clouds!";
+            }
+            else if(icon.equals("03n")){
+
+            }
+            else if(icon.equals("04n")){
+
+            }
+            else if(icon.equals("09n")){
+                return "This is not your average, everyday rain shower. This is...ADVANCED rain shower.";
+            }
+            else if(icon.equals("10n")){
+                return "Rain cannot replace friendship. /n - Patrick";
+            }
+            else if(icon.equals("11n")){
+
+            }
+            else if(icon.equals("13n")){
+
+            }
+            else if(icon.equals("50n")){
+                return "Remember, mist is illegal on other planets.";
+            }
+            return null;
+        }*/
 
         public int getTempMin() {
             return tempMin;
@@ -415,11 +601,6 @@ public class MainActivity extends AppCompatActivity {
             return description;
         }
 
-        public String getQuotation() {
-            String quotation = "";
-            return quotation;
-        }
-
     }
 
 
@@ -458,6 +639,8 @@ public class MainActivity extends AppCompatActivity {
             tempMax.setText(convertTemp(weather.getTempMax()) + "°");
             tempMin.setText("/" + convertTemp(weather.getTempMin()) + "°");
             image.setImageResource(weather.getImage());
+
+           // quote.setText(weather.getQuotation());
 
 
             return view;
