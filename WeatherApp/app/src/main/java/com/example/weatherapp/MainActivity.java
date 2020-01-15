@@ -123,8 +123,12 @@ public class MainActivity extends AppCompatActivity {
         try {
             Criteria locationCriteria = new Criteria();
             String providerName = locationManager.getBestProvider(locationCriteria, true);
+
             gps_loc = locationManager.getLastKnownLocation(providerName);
             network_loc = locationManager.getLastKnownLocation(providerName);
+
+            /*gps_loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            network_loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -141,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             latitude = 0.0;
             longitude = 0.0;
         }
-        Log.d("INFORMATION",latitude+"");
+        Log.d("INFORMATION", latitude + "");
 
         try {
             Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
@@ -549,7 +553,7 @@ public class MainActivity extends AppCompatActivity {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("TESTING",position+"");
+                    Log.d("TESTING", position + "");
                 }
             });
 
