@@ -87,9 +87,6 @@ public class MainActivity extends AppCompatActivity {
     ImageView currentWeatherConditions;
     String currentWeatherInfo;
 
-
-    String forecastInfo;
-
     JSONObject forecastData;
     JSONObject weatherData;
     String formattedDate;
@@ -105,8 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
     Double latitude;
     Double longitude;
-    static String TAG = "MainActivity";
-    Location gps_loc = null,network_loc=null,final_loc = null;
+    Location gps_loc = null, network_loc = null, final_loc = null;  //used for getting the location of the device based on the location and network the device is on
     String locationZipCode;
 
     @Override
@@ -114,56 +110,48 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
 
-            Toast.makeText(this,"not granted",Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(this,"granted",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "not granted", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "granted", Toast.LENGTH_SHORT).show();
         }
 
-        try{
+        try {
             Criteria locationCriteria = new Criteria();
-            String providerName = locationManager.getBestProvider(locationCriteria,true);
+            String providerName = locationManager.getBestProvider(locationCriteria, true);
             gps_loc = locationManager.getLastKnownLocation(providerName);
             network_loc = locationManager.getLastKnownLocation(providerName);
-        }catch(Exception e){
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        if(gps_loc!=null){
+        if (gps_loc != null) {
             final_loc = gps_loc;
             latitude = final_loc.getLatitude();
             longitude = final_loc.getLongitude();
-        }
-        else if(network_loc != null){
+        } else if (network_loc != null) {
             final_loc = network_loc;
             latitude = final_loc.getLatitude();
             longitude = final_loc.getLongitude();
-        }
-        else{
+        } else {
             latitude = 0.0;
             longitude = 0.0;
         }
 
-
-        try{
-            Geocoder geocoder = new Geocoder(getApplicationContext(),Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(latitude,longitude,1);
+        try {
+            Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
             if (addresses != null && addresses.size() > 0) {
-                String address = addresses.get(0).getAddressLine(0);
-                String city = addresses.get(0).getLocality();
-                String state = addresses.get(0).getAdminArea();
                 String country = addresses.get(0).getCountryName();
                 String postal_code = addresses.get(0).getPostalCode();
-                locationZipCode = postal_code;
-                String knownName = addresses.get(0).getFeatureName();
-
+                if (country.equals("United States"))
+                    locationZipCode = postal_code;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -201,11 +189,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Log.d("ZIPCODE",locationZipCode);
-        if(locationZipCode.length() > 3){
-            sendZipCodeToThread = locationZipCode;
-            new AsyncThread().execute(sendZipCodeToThread);
-            zipCodeFinder.onEditorAction(EditorInfo.IME_ACTION_DONE);
+        if (locationZipCode != null) {
+            if (locationZipCode.length() > 3) {
+                Log.d("ZIPCODE", locationZipCode);
+                sendZipCodeToThread = locationZipCode;
+                new AsyncThread().execute(sendZipCodeToThread);
+                zipCodeFinder.onEditorAction(EditorInfo.IME_ACTION_DONE);
+            }
         }
         submitzipcode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,6 +212,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... params) {
             zipcode = params[0];
+
+            listWeather.clear();
 
             Log.d("zipcode", zipcode);
 
@@ -249,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
                 forecastData = new JSONObject(info);
                 weatherData = new JSONObject(info2);
                 long unixSeconds = weatherData.getLong("dt");
-                Log.d("INFORMATION",info2);
+                Log.d("INFORMATION", info2);
                 Date date = new java.util.Date(unixSeconds * 1000L);
                 SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getDateTimeInstance();
                 sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT-5"));
@@ -262,21 +254,20 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
 
-
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             try {        //for the 5 day forecast
 
                 JSONArray forecast = forecastData.getJSONArray("list");
-                Log.d("FORECASE",forecast.toString());
+                Log.d("FORECASE", forecast.toString());
 
-                for(int x = 0;x<forecast.length();x++){
+                for (int x = 0; x < forecast.length(); x++) {
                     JSONObject object = forecast.getJSONObject(x);
                     listWeather.add(new Weather(object));
                 }
 
-                CustomAdapter customAdapter = new CustomAdapter(MainActivity.this,R.layout.adapter_custom,listWeather);
+                CustomAdapter customAdapter = new CustomAdapter(MainActivity.this, R.layout.adapter_custom, listWeather);
                 listView.setAdapter(customAdapter);
 
                 currentTime.setText(formattedDate);
@@ -284,67 +275,50 @@ public class MainActivity extends AppCompatActivity {
                 cityname = weatherData.getString("name");
                 city.setText(cityname);
 
-                currentTemp.setText(df.format(convertTemp((int)(weatherData.getJSONObject("main").getDouble("temp")))) + "°F");
-                currentHighTemp.setText("Day " + df.format(convertTemp((int)(weatherData.getJSONObject("main").getDouble("temp_max")))) + "°F");
-                currentLowTemp.setText("Night " + df.format(convertTemp((int)(weatherData.getJSONObject("main").getDouble("temp_min")))) + "°F");
+                currentTemp.setText(df.format(convertTemp((int) (weatherData.getJSONObject("main").getDouble("temp")))) + "°F");
+                currentHighTemp.setText("Day " + df.format(convertTemp((int) (weatherData.getJSONObject("main").getDouble("temp_max")))) + "°F");
+                currentLowTemp.setText("Night " + df.format(convertTemp((int) (weatherData.getJSONObject("main").getDouble("temp_min")))) + "°F");
                 currentWeatherInfo = weatherData.getJSONArray("weather").getJSONObject(0).getString("icon");
 
-                if (currentWeatherInfo.equals("01d")){
+                if (currentWeatherInfo.equals("01d")) {
                     quote.setText("You never know the true value of the sun until it becomes a memory \n -Spongebob");
-                }
-                else if(currentWeatherInfo.equals("02d")){
+                } else if (currentWeatherInfo.equals("02d")) {
                     quote.setText("Hey Patrick, I thought of something funnier than clouds...few clouds!");
-                }
-                else if(currentWeatherInfo.equals("03d")){
+                } else if (currentWeatherInfo.equals("03d")) {
                     quote.setText("Well, it may be cloudy, but it's also daytime");
-                }
-                else if(currentWeatherInfo.equals("04d")){
+                } else if (currentWeatherInfo.equals("04d")) {
 
-                }
-                else if(currentWeatherInfo.equals("09d")){
-
-                }
-                else if(currentWeatherInfo.equals("10d")){
-                    quote.setText("Rain cannot replace friendship. \n - Patrick");
-                }
-                else if(currentWeatherInfo.equals("11d")){
-
-                }
-                else if(currentWeatherInfo.equals("13d")){
-                    quote.setText("Once there was snow. There was so much that everyone died...the end");
-                }
-                else if(currentWeatherInfo.equals("50n")){
-                    quote.setText("Too bad mist is not here to enjoy mist not being here \n -Squidward");
-                }
-                else if(currentWeatherInfo.equals("01n")){
-                    Log.d("REACHED","RECHED");
-                    quote.setText("You don't need the sun to drive \n -Spongebob");
-                }
-                else if(currentWeatherInfo.equals("02n")){
-                    quote.setText("Hey Patrick, I thought of something funnier than clouds...few clouds!");
-                }
-                else if(currentWeatherInfo.equals("03n")){
-
-                }
-                else if(currentWeatherInfo.equals("04n")){
-
-                }
-                else if(currentWeatherInfo.equals("09n")){
+                } else if (currentWeatherInfo.equals("09d")) {
                     quote.setText("This is not your average, everyday rain shower. This is...ADVANCED rain shower.");
-                }
-                else if(currentWeatherInfo.equals("10n")){
+                } else if (currentWeatherInfo.equals("10d")) {
                     quote.setText("Rain cannot replace friendship. \n - Patrick");
-                }
-                else if(currentWeatherInfo.equals("11n")){
+                } else if (currentWeatherInfo.equals("11d")) {
 
-                }
-                else if(currentWeatherInfo.equals("13n")){
+                } else if (currentWeatherInfo.equals("13d")) {
+                    quote.setText("Once there was snow. There was so much that everyone died...the end");
+                } else if (currentWeatherInfo.equals("50n")) {
+                    quote.setText("Too bad mist is not here to enjoy mist not being here \n -Squidward");
+                } else if (currentWeatherInfo.equals("01n")) {
+                    Log.d("REACHED", "RECHED");
+                    quote.setText("You don't need the sun to drive \n -Spongebob");
+                } else if (currentWeatherInfo.equals("02n")) {
+                    quote.setText("Hey Patrick, I thought of something funnier than clouds...few clouds!");
+                } else if (currentWeatherInfo.equals("03n")) {
+                    quote.setText("Well, it may be cloudy, but it's also daytime");
+                } else if (currentWeatherInfo.equals("04n")) {
 
-                }
-                else if(currentWeatherInfo.equals("50n")){
+                } else if (currentWeatherInfo.equals("09n")) {
+                    quote.setText("This is not your average, everyday rain shower. This is...ADVANCED rain shower.");
+                } else if (currentWeatherInfo.equals("10n")) {
+                    quote.setText("Rain cannot replace friendship. \n - Patrick");
+                } else if (currentWeatherInfo.equals("11n")) {
+
+                } else if (currentWeatherInfo.equals("13n")) {
+                    quote.setText("Once there was snow. There was so much that everyone died...the end");
+                } else if (currentWeatherInfo.equals("50n")) {
                     quote.setText("Remember, mist is illegal on other planets.");
                 }
-                decideImage(currentWeatherInfo,currentWeatherConditions);
+                decideImage(currentWeatherInfo, currentWeatherConditions);
 
             } catch (Exception e) {
 
@@ -369,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
                 v.setImageResource(R.drawable.scatteredclouds);
                 break;
             case "04d":
-                v.setImageResource(R.drawable.brokenclouds);
+                v.setImageResource(R.drawable.ic_fewclouds);
                 break;
             case "09d":
                 v.setImageResource(R.drawable.showerrain);
@@ -390,28 +364,28 @@ public class MainActivity extends AppCompatActivity {
                 v.setImageResource(R.drawable.ic_clearskynight);
                 break;
             case "02n":
-                v.setImageResource(R.drawable.ic_fewclouds);
+                v.setImageResource(R.drawable.fewcloudsnight);
                 break;
             case "03n":
                 v.setImageResource(R.drawable.scatteredclouds);
                 break;
             case "04n":
-                v.setImageResource(R.drawable.brokenclouds);
+                v.setImageResource(R.drawable.ic_fewclouds);
                 break;
             case "09n":
-                v.setImageResource(R.drawable.showerrain);
+                v.setImageResource(R.drawable.ic_rainnight);
                 break;
             case "10n":
                 v.setImageResource(R.drawable.rain);
                 break;
             case "11n":
-                v.setImageResource(R.drawable.thunderstorm);
+                v.setImageResource(R.drawable.ic_thunderstormnight);
                 break;
             case "13n":
-                v.setImageResource(R.drawable.snow);
+                v.setImageResource(R.drawable.ic_snownight);
                 break;
             case "50n":
-                v.setImageResource(R.drawable.mist);
+                v.setImageResource(R.drawable.ic_mistnight);
                 break;
             default:
                 v.setImageResource(R.drawable.ic_launcher_background);
@@ -458,79 +432,12 @@ public class MainActivity extends AppCompatActivity {
             return formattedDate;
         }
 
-        public int getTemp() {
-            return temp;
-        }
-
-        /*public String getQuotation(){
-            if (icon.equals("01d")){
-                return "You never know the true value of the sun until it becomes a memory /n -Spongebob";
-            }
-            else if(icon.equals("02d")){
-                return "Hey Patrick, I thought of something funnier than clouds...few clouds!";
-            }
-            else if(icon.equals("03d")){
-                return "Well, it may be cloudy, but it's also daytime";
-            }
-            else if(icon.equals("04d")){
-
-            }
-            else if(icon.equals("09d")){
-
-            }
-            else if(icon.equals("10d")){
-                return "Rain cannot replace friendship. /n - Patrick";
-            }
-            else if(icon.equals("11d")){
-
-            }
-            else if(icon.equals("13d")){
-                return "Once there was snow. There was so much that everyone died...the end";
-            }
-            else if(icon.equals("50n")){
-                return "Too bad mist is not here to enjoy mist not being here /n -Squidward";
-            }
-            else if(icon.equals("01n")){
-                Log.d("REACHED","RECHED");
-                return "You don't need the sun to drive /n -Spongebob";
-            }
-            else if(icon.equals("02n")){
-                return "Hey Patrick, I thought of something funnier than clouds...few clouds!";
-            }
-            else if(icon.equals("03n")){
-
-            }
-            else if(icon.equals("04n")){
-
-            }
-            else if(icon.equals("09n")){
-                return "This is not your average, everyday rain shower. This is...ADVANCED rain shower.";
-            }
-            else if(icon.equals("10n")){
-                return "Rain cannot replace friendship. /n - Patrick";
-            }
-            else if(icon.equals("11n")){
-
-            }
-            else if(icon.equals("13n")){
-
-            }
-            else if(icon.equals("50n")){
-                return "Remember, mist is illegal on other planets.";
-            }
-            return null;
-        }*/
-
         public int getTempMin() {
             return tempMin;
         }
 
         public int getTempMax() {
             return tempMax;
-        }
-
-        public String getIcon() {
-            return icon;
         }
 
         public int getImage() {
@@ -546,7 +453,7 @@ public class MainActivity extends AppCompatActivity {
                     image = R.drawable.scatteredclouds;
                     break;
                 case "04d":
-                    image = R.drawable.brokenclouds;
+                    image = R.drawable.ic_fewclouds;
                     break;
                 case "09d":
                     image = R.drawable.showerrain;
@@ -558,7 +465,7 @@ public class MainActivity extends AppCompatActivity {
                     image = R.drawable.thunderstorm;
                     break;
                 case "13d":
-                    image  = (R.drawable.snow);
+                    image = (R.drawable.snow);
                     break;
                 case "50d":
                     image = (R.drawable.mist);
@@ -573,7 +480,7 @@ public class MainActivity extends AppCompatActivity {
                     image = (R.drawable.scatteredclouds);
                     break;
                 case "04n":
-                    image = (R.drawable.brokenclouds);
+                    image = (R.drawable.ic_fewclouds);
                     break;
                 case "09n":
                     image = (R.drawable.showerrain);
@@ -603,13 +510,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     public class CustomAdapter extends ArrayAdapter<Weather> {
 
         ArrayList<Weather> list;
         Context parentContext;
         int xmlResource;
-
 
         public CustomAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Weather> objects) {
             super(context, resource, objects);
@@ -640,8 +545,12 @@ public class MainActivity extends AppCompatActivity {
             tempMin.setText("/" + convertTemp(weather.getTempMin()) + "°");
             image.setImageResource(weather.getImage());
 
-           // quote.setText(weather.getQuotation());
-
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("TESTING",position+"");
+                }
+            });
 
             return view;
         }
