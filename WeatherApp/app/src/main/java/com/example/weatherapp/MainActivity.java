@@ -115,9 +115,9 @@ public class MainActivity extends AppCompatActivity {
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
 
-            Toast.makeText(this, "not granted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Permission Not Granted", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "granted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
         }
 
         try {
@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
             latitude = 0.0;
             longitude = 0.0;
         }
+        Log.d("INFORMATION",latitude+"");
 
         try {
             Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
