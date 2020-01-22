@@ -21,6 +21,7 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,13 +38,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     Double lat = 0.0;
     Double lon = 0.0;
 
+    Double distance = 0.0;
+
     TextView longitude;
     TextView latitude;
     TextView currentAddress;
+    TextView totalDistance;
 
-    Float totalDistance;
 
     List<Address> addressList;
+    List<Location> locations;
 
 
     @Override
@@ -79,25 +83,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 currentAddress.setText(address);
             }
 
+
+            if(locations!=null && !locations.isEmpty()){
+                distance += location.distanceTo(locations.get(locations.size()-1));
+                totalDistance.setText(distance+"");
+            }
+            locations.add(location);
+
+
         }catch (IOException e){
 
         }
 
-        Location currentLocation = new Location("Current Location");
-        currentLocation.setLatitude(lat);
-        currentLocation.setLongitude(lon);
-
-        Log.d("LOCATION",currentLocation.toString());
-
-        Location previousLocation = new Location("Previous Location");
-        if(addressList != null && addressList.size() > 0) {
-            previousLocation.setLatitude(addressList.get(0).getLatitude());
-            previousLocation.setLongitude(addressList.get(0).getLongitude());
-        }
-
-        Log.d("LOCATION",addressList.size()+"");
-
-        totalDistance = previousLocation.distanceTo(currentLocation);
 
     }
 
@@ -110,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         longitude = findViewById(R.id.longitude);
         latitude = findViewById(R.id.latitude);
         currentAddress = findViewById(R.id.currentaddress);
+
+        locations = new ArrayList<Location>();
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -164,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
+
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
