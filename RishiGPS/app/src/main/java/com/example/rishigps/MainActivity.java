@@ -38,12 +38,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     Double lat = 0.0;
     Double lon = 0.0;
 
-    Double distance = 0.0;
+    float distance = 0.00f;
 
     TextView longitude;
     TextView latitude;
     TextView currentAddress;
     TextView totalDistance;
+
+    TextView testing;
 
 
     List<Address> addressList;
@@ -84,15 +86,21 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
 
 
-            if(locations!=null && !locations.isEmpty()){
-                distance += location.distanceTo(locations.get(locations.size()-1));
-                totalDistance.setText(distance+"");
-            }
             locations.add(location);
+            testing.setText(locations.size()+"");
+            totalDistance.setText(distance+"");
+
+            if(locations!=null){
+                if(locations.size() > 2){
+                    Log.d("Here","here");
+                    distance += location.distanceTo(locations.get(locations.size()-2));
+
+                }
+            }
 
 
-        }catch (IOException e){
-
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
 
@@ -108,7 +116,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         latitude = findViewById(R.id.latitude);
         currentAddress = findViewById(R.id.currentaddress);
 
-        locations = new ArrayList<Location>();
+        locations = new ArrayList<>();
+
+        testing = findViewById(R.id.testing);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
