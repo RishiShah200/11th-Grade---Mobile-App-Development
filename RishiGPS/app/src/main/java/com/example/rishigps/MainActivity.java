@@ -21,6 +21,7 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     List<Address> addressList;
     List<Location> locations;
+
+    DecimalFormat df = new DecimalFormat("0.00##");
 
 
     @Override
@@ -88,21 +91,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
             locations.add(location);
             testing.setText(locations.size()+"");
-            totalDistance.setText(distance+"");
+            totalDistance.setText(df.format(distance));
 
             if(locations!=null){
                 if(locations.size() > 2){
-                    Log.d("Here","here");
                     distance += location.distanceTo(locations.get(locations.size()-2));
-
                 }
             }
 
-
+            
         }catch (Exception e){
             e.printStackTrace();
         }
-
 
     }
 
@@ -117,6 +117,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         currentAddress = findViewById(R.id.currentaddress);
 
         locations = new ArrayList<>();
+
+        totalDistance = findViewById(R.id.distance);
 
         testing = findViewById(R.id.testing);
 
@@ -136,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 if (permissionAccessCoarseLocationApproved && permissionAccessFineLocationApproved) {
                     try {
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);     //5*60*1000
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 1, this);     //5*60*1000
                     } catch (Exception e) {
 
                     }
@@ -158,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
             else{
                 try {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);     //5*60*1000
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 1, this);     //5*60*1000
                 } catch (Exception e) {
 
                 }
