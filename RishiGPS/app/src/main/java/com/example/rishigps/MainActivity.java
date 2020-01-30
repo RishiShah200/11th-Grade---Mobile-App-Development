@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     DecimalFormat df = new DecimalFormat("0.00##");
 
+    float time = 0.00f;
+
 
     @Override
     public void onProviderEnabled(String provider) {
@@ -78,6 +80,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         latitude.setText(lat + "");
         longitude.setText(lon + "");
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            if(locations!=null) {
+                if (locations.size() > 2) {
+                    time = (location.getElapsedRealtimeNanos()) - (locations.get(locations.size() - 2).getElapsedRealtimeNanos());
+                    time = time / 1000000000;
+                    testing.setText(df.format(time));
+                }
+            }
+        }
+
 
         try{
             Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
@@ -88,9 +100,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 currentAddress.setText(address);
             }
 
-
             locations.add(location);
-            testing.setText(locations.size()+"");
+          //  testing.setText(locations.size()+"");
             totalDistance.setText(df.format(distance));
 
             if(locations!=null){
@@ -138,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 if (permissionAccessCoarseLocationApproved && permissionAccessFineLocationApproved) {
                     try {
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 1, this);     //5*60*1000
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);     //5*60*1000
                     } catch (Exception e) {
 
                     }
@@ -160,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
             else{
                 try {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 1, this);     //5*60*1000
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);     //5*60*1000
                 } catch (Exception e) {
 
                 }
