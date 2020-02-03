@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 if (locations.size() > 2) {
                     time = (location.getElapsedRealtimeNanos()) - (locations.get(locations.size() - 2).getElapsedRealtimeNanos());
                     time = time / 1000000000;
-                    testing.setText(df.format(time));
+                    testing.setText(df.format(time) + "s");
                 }
             }
         }
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
             locations.add(location);
           //  testing.setText(locations.size()+"");
-            totalDistance.setText(df.format(distance));
+            totalDistance.setText(df.format(distance) + " meters");
 
             if(locations!=null){
                 if(locations.size() > 2){
