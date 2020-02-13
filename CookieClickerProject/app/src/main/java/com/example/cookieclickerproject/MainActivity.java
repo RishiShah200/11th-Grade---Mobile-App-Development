@@ -2,7 +2,10 @@ package com.example.cookieclickerproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -25,28 +28,25 @@ public class MainActivity extends AppCompatActivity {
 
     int ramUpgradeCost;
 
-    static int ramMultiplier = 0;
+    static int ramMultiplier = 1;
 
     static boolean RAMbought = false;
 
-    Button startMenu;
+    ObjectAnimator objectAnimator;
+
+    ConstraintLayout constraintLayout;
+    TextView textView;
+
+    Button storeMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        storeMenu = findViewById(R.id.storeMenu);
+
         imageView = findViewById(R.id.basketball);
-
-        startMenu = findViewById(R.id.startMenu);
-
-        startMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,SideMenu.class);
-                startActivity(intent);
-            }
-        });
 
         btcView = findViewById(R.id.score);
 
@@ -75,12 +75,51 @@ public class MainActivity extends AppCompatActivity {
         final ScaleAnimation scaleAnimation = new ScaleAnimation(1.25f,1.0f,1.25f,1.0f, Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
         scaleAnimation.setDuration(250);
 
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 v.startAnimation(scaleAnimation);
                 btc.addAndGet(1);
                 btcView.setText(btc.toString() + "Ƀ");
+
+                constraintLayout = findViewById(R.id.id_layout);
+                textView = new TextView(MainActivity.this);
+                textView.setId(View.generateViewId());
+
+                textView.setText(ramMultiplier+"");
+                ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT
+                        ,ConstraintLayout.LayoutParams.WRAP_CONTENT);
+
+                textView.setLayoutParams(params);
+                constraintLayout.addView(textView);
+
+                ConstraintSet constraintSet = new ConstraintSet();  //whatever constraints were already present will be cloned.
+                constraintSet.clone(constraintLayout);
+
+                constraintSet.connect(textView.getId(),ConstraintSet.TOP,constraintLayout.getId(),ConstraintSet.TOP);
+                constraintSet.connect(textView.getId(),ConstraintSet.BOTTOM,constraintLayout.getId(),ConstraintSet.BOTTOM);
+                constraintSet.connect(textView.getId(),ConstraintSet.LEFT,constraintLayout.getId(),ConstraintSet.LEFT);
+                constraintSet.connect(textView.getId(),ConstraintSet.RIGHT,constraintLayout.getId(),ConstraintSet.RIGHT);
+
+                float rand = (float)(Math.random()*.5)+.25f;
+                constraintSet.setHorizontalBias(textView.getId(),rand);
+                constraintSet.setVerticalBias(textView.getId(),0.25f);
+
+                constraintSet.applyTo(constraintLayout);
+
+                objectAnimator = ObjectAnimator.ofFloat(textView,"translationY",-500f);
+                objectAnimator.setDuration(1000);
+                objectAnimator.start();
+
+            }
+        });
+
+        storeMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent startStore = new Intent(MainActivity.this,StoreActivity.class);
+                startActivity(startStore);
             }
         });
     }
