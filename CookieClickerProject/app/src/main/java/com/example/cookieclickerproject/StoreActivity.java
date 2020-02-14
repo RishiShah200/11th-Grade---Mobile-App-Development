@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -20,6 +21,7 @@ public class StoreActivity extends AppCompatActivity {
     CardView ramupgrade;
 
     Button returnToGame;
+    TextView costOfRamUpgrade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,8 @@ public class StoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_store);
 
         btc = new AtomicInteger();
+
+        costOfRamUpgrade = findViewById(R.id.costoframupgrade);
 
        btc.set(getIntent().getIntExtra("BTC",0));
        Log.d("BTCACTUALVALUE",btc.intValue()+"");
@@ -65,6 +69,8 @@ public class StoreActivity extends AppCompatActivity {
                 startActivity(backToGame);
             }
         });
+
+        costOfRamUpgrade.setText(ramUpgradeCost+"");
 
 
     }
