@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -21,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MainActivity extends AppCompatActivity {
 
     ImageView imageView;
-    TextView btcView;
+    static TextView btcView;
 
     public static AtomicInteger btc;
 
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     TextView textView;
 
     Button storeMenu;
+
+    static int passiveIncomeTime;
 
     protected void onStart() {
         super.onStart();
@@ -76,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
         setTitle("Bitcoin Clicker");
 
+        passiveIncomeTime = 2000;
+
         storeMenu = findViewById(R.id.storeMenu);
 
         imageView = findViewById(R.id.basketball);
@@ -114,13 +119,13 @@ public class MainActivity extends AppCompatActivity {
                 constraintSet.connect(textView.getId(),ConstraintSet.LEFT,constraintLayout.getId(),ConstraintSet.LEFT);
                 constraintSet.connect(textView.getId(),ConstraintSet.RIGHT,constraintLayout.getId(),ConstraintSet.RIGHT);
 
-                float rand = (float)(Math.random()*.5)+.25f;
+                float rand = (float)(Math.random()*.5)+.35f;
                 constraintSet.setHorizontalBias(textView.getId(),rand);
-                constraintSet.setVerticalBias(textView.getId(),0.25f);
+                constraintSet.setVerticalBias(textView.getId(),0.3f);
 
                 constraintSet.applyTo(constraintLayout);
 
-                objectAnimator = ObjectAnimator.ofFloat(textView,"translationY",-550f);
+                objectAnimator = ObjectAnimator.ofFloat(textView,"translationY",-600f);
                 objectAnimator.setDuration(1000);
                 objectAnimator.start();
 
@@ -133,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent startStore = new Intent(MainActivity.this,StoreActivity.class);
                 startStore.putExtra("ramUpgradeCost",ramUpgradeCost);
                 startStore.putExtra("ramMultiplier",ramMultiplier);
+                startStore.putExtra("passiveIncomeTime",passiveIncomeTime);
                 startStore.putExtra("BTC",btc.intValue());
                 startActivity(startStore);
             }
@@ -140,17 +146,22 @@ public class MainActivity extends AppCompatActivity {
 
         ramUpgradeCost = getIntent().getIntExtra("ramUpgradeCostAfterStore",50);
         ramMultiplier = getIntent().getIntExtra("ramMultiplierAfterStore",1);
+        passiveIncomeTime = getIntent().getIntExtra("passiveIncomeTime",2000);
         btc.set(getIntent().getIntExtra("BTC",0));
-        btcView.setText(btc.toString());
+        btcView.setText(btc.toString() + "Ƀ");
 
         if (savedInstanceState != null) {
             Log.d("BTCVALUE","TEST");
             Log.d("BTCVALUE",savedInstanceState.getInt("BTC")+"");
             btc.set(savedInstanceState.getInt("BTC"));
-            btcView.setText(btc.toString());
+            btcView.setText(btc.toString() + "Ƀ");
             ramMultiplier = savedInstanceState.getInt("ramMultiplier");
             ramUpgradeCost = savedInstanceState.getInt("ramUpgradeCost");
+            passiveIncomeTime = savedInstanceState.getInt("passiveIncomeTime");
         }
+
+
+        btcView.setText(btc.toString() + "Ƀ");
 
     }
 
@@ -161,14 +172,32 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt("BTC",btc.intValue());
         outState.putInt("ramUpgradeCost",ramUpgradeCost);
         outState.putInt("ramMultiplier",ramMultiplier);
+        outState.putInt("passiveIncomeTime",passiveIncomeTime);
     }
 
     public static class MyThread extends Thread{
+        Handler handler = new Handler();
+
         public void run(){
             try{
                 Thread.sleep(2);
             }catch(Exception e){ }
-           btc.addAndGet(ramMultiplier);
+            while(true) {
+                btc.addAndGet(ramMultiplier);
+                try {
+                    Thread.sleep(passiveIncomeTime);
+                    Log.d("passiveIncomeTime",passiveIncomeTime+"");
+                } catch (Exception e) {
+
+                }
+
+                handler.post(new Runnable() {
+                    public void run() {
+                        btcView.setText(btc.toString() + "Ƀ");
+                    }
+                });
+
+            }
 
         }
     }

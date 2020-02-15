@@ -23,6 +23,40 @@ public class StoreActivity extends AppCompatActivity {
     Button returnToGame;
     TextView costOfRamUpgrade;
 
+    TextView ramcnt;
+    int numOfRamUpgradesBought;
+
+    int passiveIncomeTime;
+
+    protected void onStart() {
+        super.onStart();
+        Log.d("tag2","Start");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("tag2","Stop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("tag2","Destroy");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("tag2","Pause");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("tag2","Resume");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,11 +65,13 @@ public class StoreActivity extends AppCompatActivity {
         btc = new AtomicInteger();
 
         costOfRamUpgrade = findViewById(R.id.costoframupgrade);
+        ramcnt = findViewById(R.id.ramcnt);
 
-       btc.set(getIntent().getIntExtra("BTC",0));
+       btc.set(getIntent().getIntExtra("BTC",0));       //maybe make this what is stored in the savedInstanceState
        Log.d("BTCACTUALVALUE",btc.intValue()+"");
         ramUpgradeCost = getIntent().getIntExtra("ramUpgradeCost",50);
         ramMultiplier = getIntent().getIntExtra("ramMultiplier",1);
+        passiveIncomeTime = getIntent().getIntExtra("passiveIncomeTime",2000);
 
         ramupgrade = findViewById(R.id.ramupgrade);
         returnToGame = findViewById(R.id.returnToGame);
@@ -47,13 +83,18 @@ public class StoreActivity extends AppCompatActivity {
                 ramupgrade.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        numOfRamUpgradesBought++;
+                        passiveIncomeTime = (int)(passiveIncomeTime - passiveIncomeTime*0.2);
+                        ramcnt.setText(numOfRamUpgradesBought+"");
                         ramMultiplier+=1;
                         btc.addAndGet(-ramUpgradeCost);
+                        Log.d("AMOUNT",btc.intValue()+"");
                         ramUpgradeCost = (int)(ramUpgradeCost + ramUpgradeCost*.5);
                         new MainActivity.MyThread().start();
                     }
                 });
-            } else {
+            }
+            else {
                 ramupgrade.setClickable(false);
                 ramupgrade.setCardBackgroundColor(Color.GRAY);
             }
@@ -65,15 +106,31 @@ public class StoreActivity extends AppCompatActivity {
                 Intent backToGame = new Intent(StoreActivity.this,MainActivity.class);
                 backToGame.putExtra("ramUpgradeCostAfterStore",ramUpgradeCost);
                 backToGame.putExtra("ramMultiplierAfterStore",ramMultiplier);
+                backToGame.putExtra("passiveIncomeTime",passiveIncomeTime);
+                Log.d("passiveIncomeTime",passiveIncomeTime+"");
                 backToGame.putExtra("BTC",btc.intValue());
                 startActivity(backToGame);
             }
         });
 
         costOfRamUpgrade.setText(ramUpgradeCost+"");
+        ramcnt.setText(numOfRamUpgradesBought+"");
+        if (savedInstanceState != null) {
+            Log.d("REACHED","REACHED");
+            //numOfRamUpgradesBought = savedInstanceState.getInt("ramcnt");
+          //  ramcnt.setText(numOfRamUpgradesBought+"");
+            numOfRamUpgradesBought = Integer.parseInt(savedInstanceState.getString("ramcnt"));
+            ramcnt.setText(numOfRamUpgradesBought+"");
 
+        }
 
     }
 
 
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        Log.d("REACHED",(String)ramcnt.getText());
+      //  outState.putInt("ramcnt",numOfRamUpgradesBought);
+        outState.putString("ramcnt",(String)ramcnt.getText());
+    }
 }
