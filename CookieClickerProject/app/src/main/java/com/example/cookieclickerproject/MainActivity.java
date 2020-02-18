@@ -11,10 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageView imageView;
+    static ImageView computer;
     static TextView btcView;
 
     public static AtomicInteger btc;
@@ -44,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
     static Handler handler = new Handler();
 
+    ImageView imageView;
+
     @Override
     public void onTopResumedActivityChanged(boolean isTopResumedActivity) {
         super.onTopResumedActivityChanged(isTopResumedActivity);
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         costoframupgrade = findViewById(R.id.costoframupgrade);
         ramcnt = findViewById(R.id.ramcnt);
         ramupgrade = findViewById(R.id.ramupgrade);
-        imageView = findViewById(R.id.basketball);
+        computer = findViewById(R.id.basketball);
         btcView = findViewById(R.id.score);
 
         ramUpgradeCost = new AtomicInteger();
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         final ScaleAnimation scaleAnimation = new ScaleAnimation(1.25f, 1.0f, 1.25f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         scaleAnimation.setDuration(250);
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        computer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkTransactionValidity();
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
                 constraintSet.applyTo(constraintLayout);
 
-                objectAnimator = ObjectAnimator.ofFloat(textView, "translationY", -600f);
+                objectAnimator = ObjectAnimator.ofFloat(textView, "translationY", -650f);
                 objectAnimator.setDuration(2000);
 
                 objectAnimator.start();
@@ -125,6 +124,33 @@ public class MainActivity extends AppCompatActivity {
                 btc.addAndGet(-1 * ramUpgradeCost.get());
                 ramUpgradeCost.set((ramUpgradeCost.get() * 2));
                 costoframupgrade.setText(ramUpgradeCost.get() + "");
+
+
+                imageView = new ImageView(MainActivity.this);
+                imageView.setId(View.generateViewId());
+
+                imageView.setImageResource(R.drawable.ramimage);
+                ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT
+                        , ConstraintLayout.LayoutParams.WRAP_CONTENT);
+
+                imageView.setLayoutParams(params);
+                constraintLayout.addView(imageView);
+
+                ConstraintSet constraintSet = new ConstraintSet();  //whatever constraints were already present will be cloned.
+                constraintSet.clone(constraintLayout);
+
+                constraintSet.connect(imageView.getId(), ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP);
+                constraintSet.connect(imageView.getId(), ConstraintSet.BOTTOM, constraintLayout.getId(), ConstraintSet.BOTTOM);
+                constraintSet.connect(imageView.getId(), ConstraintSet.LEFT, constraintLayout.getId(), ConstraintSet.LEFT);
+                constraintSet.connect(imageView.getId(), ConstraintSet.RIGHT, constraintLayout.getId(), ConstraintSet.RIGHT);
+
+                float rand = (float) (Math.random() * .7) + .05f;
+                constraintSet.setHorizontalBias(imageView.getId(), rand);
+                constraintSet.setVerticalBias(imageView.getId(), 0.15f);
+
+                constraintSet.applyTo(constraintLayout);
+
+
             }
         });
 
@@ -158,6 +184,9 @@ public class MainActivity extends AppCompatActivity {
                 checkTransactionValidity();
                 btc.addAndGet(passiveIncome.get());
                 btcView.setText(btc.get() + "Ƀ");
+                if(numOfRamUpgradesBought.get() >= 3){
+                    computer.setImageResource(R.drawable.upgradedcomputer);
+                }
             } catch (Exception e) {
 
             }

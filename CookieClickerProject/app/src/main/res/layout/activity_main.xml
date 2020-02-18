@@ -27,18 +27,21 @@
         android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="TextView"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/basketball"
         app:layout_constraintEnd_toEndOf="@+id/basketball"
         app:layout_constraintStart_toStartOf="@+id/basketball"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 
     <androidx.cardview.widget.CardView
         android:id="@+id/ramupgrade"
         android:layout_width="350dp"
         android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
         android:elevation="15dp"
         app:cardBackgroundColor="#FF9100"
         app:cardCornerRadius="25dp"
@@ -46,7 +49,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.92">
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
