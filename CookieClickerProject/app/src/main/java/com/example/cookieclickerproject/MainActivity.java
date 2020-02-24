@@ -6,12 +6,15 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView imageView;
 
+    ImageView backgroundOne;
+    ImageView backgroundTwo;
+
     @Override
     public void onTopResumedActivityChanged(boolean isTopResumedActivity) {
         super.onTopResumedActivityChanged(isTopResumedActivity);
@@ -52,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        backgroundOne = findViewById(R.id.background_one);
+        backgroundTwo = findViewById(R.id.background_two);
 
         setTitle("Bitcoin Clicker");
         costoframupgrade = findViewById(R.id.costoframupgrade);
@@ -69,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
         ramUpgradeCost.set(50);
         passiveIncome.set(0);
         ramMultiplier.set(1);
+
+        btcView.setTextColor(Color.WHITE);
+        btcView.setTextSize(40);
+        btcView.setTypeface(null, Typeface.BOLD);
 
         final ScaleAnimation scaleAnimation = new ScaleAnimation(1.25f, 1.0f, 1.25f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         scaleAnimation.setDuration(250);
@@ -89,6 +102,10 @@ public class MainActivity extends AppCompatActivity {
                 ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT
                         , ConstraintLayout.LayoutParams.WRAP_CONTENT);
 
+                textView.setTextColor(Color.WHITE);
+                textView.setTypeface(null, Typeface.BOLD);
+                textView.setTextSize(20);
+
                 textView.setLayoutParams(params);
                 constraintLayout.addView(textView);
 
@@ -100,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 constraintSet.connect(textView.getId(), ConstraintSet.LEFT, constraintLayout.getId(), ConstraintSet.LEFT);
                 constraintSet.connect(textView.getId(), ConstraintSet.RIGHT, constraintLayout.getId(), ConstraintSet.RIGHT);
 
-                float rand = (float) (Math.random() * .7) + .15f;
+                float rand = (float) (Math.random() * .7) + .05f;
                 constraintSet.setHorizontalBias(textView.getId(), rand);
                 constraintSet.setVerticalBias(textView.getId(), 0.3f);
 
@@ -151,8 +168,30 @@ public class MainActivity extends AppCompatActivity {
                 constraintSet.applyTo(constraintLayout);
 
 
+                objectAnimator = ObjectAnimator.ofFloat(imageView, "translationX", -100f);
+                objectAnimator.setDuration(2000);
+
+                objectAnimator.start();
+
+
             }
         });
+
+        final ValueAnimator animator = ValueAnimator.ofFloat(0.0f, 1.0f);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setDuration(10000L);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                final float progress = (float) animation.getAnimatedValue();
+                final float width = backgroundOne.getWidth();
+                final float translationX = width * progress;
+                backgroundOne.setTranslationX(translationX);
+                backgroundTwo.setTranslationX(translationX - width);
+            }
+        });
+        animator.start();
 
         if (savedInstanceState != null) {
             btc.set(savedInstanceState.getInt("BTC"));
@@ -184,13 +223,13 @@ public class MainActivity extends AppCompatActivity {
                 checkTransactionValidity();
                 btc.addAndGet(passiveIncome.get());
                 btcView.setText(btc.get() + "Ƀ");
-                if(numOfRamUpgradesBought.get() >= 3){
+                if (numOfRamUpgradesBought.get() >= 3) {
                     computer.setImageResource(R.drawable.upgradedcomputer);
                 }
             } catch (Exception e) {
 
             }
-            Log.d("BTC",(btc.get() >= ramUpgradeCost.get())+"");
+            Log.d("BTC", (btc.get() >= ramUpgradeCost.get()) + "");
             handler.postDelayed(this, 1000);
         }
     }
@@ -199,8 +238,7 @@ public class MainActivity extends AppCompatActivity {
         if (btc.get() >= ramUpgradeCost.get()) {
             ramupgrade.setClickable(true);
             ramupgrade.setCardBackgroundColor(Color.RED);
-        }
-        else if (btc.get() <= ramUpgradeCost.get()) {
+        } else if (btc.get() <= ramUpgradeCost.get()) {
             ramupgrade.setClickable(false);
             ramupgrade.setCardBackgroundColor(Color.GRAY);
         }
