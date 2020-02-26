@@ -1,5 +1,6 @@
 package com.example.intentsdemo;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     Button launch;
 
 
-    static final int NUMBER_CODE = 1243;
+    static final int NUMBER_CODE = 123;
     static final String INTENT_CODE = "number";
 
     @Override
@@ -30,9 +31,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intentToLoad = new Intent(MainActivity.this,NumberActivity.class);
                 intentToLoad.putExtra("TEST","This is a test");
-                startActivity(intentToLoad,);
+                startActivityForResult(intentToLoad,NUMBER_CODE);
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == NUMBER_CODE && resultCode == RESULT_OK){
+            number.setText(data.getStringExtra(INTENT_CODE));
+        }
     }
 }
