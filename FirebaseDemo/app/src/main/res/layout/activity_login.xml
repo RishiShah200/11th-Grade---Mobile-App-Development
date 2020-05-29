@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@+id/enterEmail" />
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/registerUserButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -78,7 +78,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/forgot_password"
+        android:id="@+id/resetPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -86,7 +86,7 @@
         android:textColor="@color/login_form_details"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+        app:layout_constraintTop_toBottomOf="@+id/registerUserButton" />
 
     <View
         android:id="@+id/footer_line"
@@ -98,7 +98,7 @@
     </View>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/make_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Don't have an account"
@@ -114,7 +114,7 @@
         android:background="@color/login_form_details_medium"
         android:id="@+id/line1"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/forgot_password"
+        app:layout_constraintTop_toBottomOf="@id/resetPassword"
         app:layout_constraintBottom_toTopOf="@id/sign_in_button"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintEnd_toStartOf="@+id/or"/>
@@ -148,5 +148,5 @@
         app:layout_constraintBottom_toTopOf="@+id/footer_line"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/forgot_password" />
+        app:layout_constraintTop_toBottomOf="@+id/resetPassword" />
 </androidx.constraintlayout.widget.ConstraintLayout>

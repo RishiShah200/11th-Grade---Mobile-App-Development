@@ -12,9 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.firebasedemo.LoginActivity;
 import com.example.firebasedemo.R;
-import com.example.firebasedemo.RegisterActivity;
-import com.example.firebasedemo.StartActivity;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -61,7 +60,7 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void onResult(Status status) {
                                 Toast.makeText(getActivity().getApplicationContext(),"Logged Out",Toast.LENGTH_SHORT).show();
-                                Intent i=new Intent(getActivity().getApplicationContext(),RegisterActivity.class);
+                                Intent i=new Intent(getActivity().getApplicationContext(), LoginActivity.class);
                                 startActivity(i);
                             }
                         });
@@ -69,7 +68,7 @@ public class HomeFragment extends Fragment {
 
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(getContext(), "Successfully Logged Out!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getContext(),StartActivity.class));
+                startActivity(new Intent(getContext(),LoginActivity.class));
                 getActivity().finish();
             }
         });
