@@ -1,2 +1,2 @@
-rootProject.name='FirebaseDemo'
+rootProject.name='InventoryManager'
 include ':app'
