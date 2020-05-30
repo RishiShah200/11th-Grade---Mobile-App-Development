@@ -83,6 +83,8 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemSel
 
     private String api = visionAPI[0];
 
+    String[] imageName;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -204,6 +206,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemSel
             }
 
             protected void onPostExecute(String result) {
+
                 visionAPIData.setText(result);
                 imageUploadProgress.setVisibility(View.INVISIBLE);
             }
