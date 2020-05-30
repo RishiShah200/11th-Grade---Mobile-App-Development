@@ -1,13 +1,10 @@
-package com.example.firebasedemo.ui.dashboard;
+package com.example.firebasedemo.ui.detection;
 
 import android.Manifest;
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,24 +15,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.firebasedemo.MainActivity;
 import com.example.firebasedemo.R;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.common.AccountPicker;
 import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
@@ -52,17 +45,18 @@ import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
 import com.google.api.services.vision.v1.model.ImageProperties;
 import com.google.api.services.vision.v1.model.SafeSearchAnnotation;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
-import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-public class DashboardFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class DetectionFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "MainActivity";
     private static final int RECORD_REQUEST_CODE = 101;
@@ -74,7 +68,6 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemSel
     ProgressBar imageUploadProgress;
     ImageView imageView;
     Spinner spinnerVisionAPI;
-    TextView visionAPIData;
 
 
     private Feature feature;
@@ -83,18 +76,40 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemSel
 
     private String api = visionAPI[0];
 
-    String[] imageName;
+    String imageName;
+    EditText scannedItem;
+
+    DatabaseReference databaseReference;
+    Button confirmItem;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        View root = inflater.inflate(R.layout.fragment_detection, container, false);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("Foods");
+        confirmItem = root.findViewById(R.id.confirmItem);
+
+        confirmItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //String id = databaseReference.push().getKey();
+                String id = scannedItem.getText().toString();
+
+                Inventory inventory = new Inventory(id,0,0);
+
+                databaseReference.child(id).setValue(inventory);
+            }
+        });
 
         takePicture = root.findViewById(R.id.takePicture);
         imageUploadProgress = root.findViewById(R.id.imageProgress);
         imageView = root.findViewById(R.id.imageView);
         spinnerVisionAPI = root.findViewById(R.id.spinnerVisionAPI);
-        visionAPIData = root.findViewById(R.id.visionAPIData);
+
+        scannedItem = root.findViewById(R.id.scannedItem);
 
         feature = new Feature();
         feature.setType(visionAPI[0]);
@@ -206,8 +221,9 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemSel
             }
 
             protected void onPostExecute(String result) {
-
-                visionAPIData.setText(result);
+                imageName = result.substring(0,result.indexOf("0"));
+                imageName = imageName.replaceAll("\\s", "");
+                scannedItem.setText(imageName);
                 imageUploadProgress.setVisibility(View.INVISIBLE);
             }
         }.execute();

@@ -1,4 +1,4 @@
-package com.example.firebasedemo.ui.dashboard;
+package com.example.firebasedemo.ui.detection;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;

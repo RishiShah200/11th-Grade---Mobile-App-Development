@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.firebasedemo.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_detection"
+        android:name="com.example.firebasedemo.ui.detection.DetectionFragment"
+        android:label="@string/title_detection"
+        tools:layout="@layout/fragment_detection" />
 
     <fragment
         android:id="@+id/navigation_notifications"
