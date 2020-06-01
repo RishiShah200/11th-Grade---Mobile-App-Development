@@ -2,12 +2,14 @@ package com.example.firebasedemo.ui.detection;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +17,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.firebasedemo.R;
@@ -50,13 +56,16 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class DetectionFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class DetectionFragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
     private static final String TAG = "MainActivity";
     private static final int RECORD_REQUEST_CODE = 101;
@@ -81,6 +90,20 @@ public class DetectionFragment extends Fragment implements AdapterView.OnItemSel
 
     DatabaseReference databaseReference;
     Button confirmItem;
+    Button chooseDate;
+
+    TextView quantity;
+    Button buttonSubtract;
+    Button buttonAdd;
+
+    static int TOTAL_QUANTITY;
+
+    DatePickerDialog datePickerDialog;
+    int year;
+    int month;
+    int dayOfMonth;
+    Calendar calendar;
+    String date;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -91,16 +114,26 @@ public class DetectionFragment extends Fragment implements AdapterView.OnItemSel
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Foods");
         confirmItem = root.findViewById(R.id.confirmItem);
+        chooseDate = root.findViewById(R.id.chooseDate);
 
-        confirmItem.setOnClickListener(new View.OnClickListener() {
+
+        quantity = root.findViewById(R.id.quantity);
+        buttonSubtract = root.findViewById(R.id.buttonSubtract);
+        buttonAdd = root.findViewById(R.id.buttonAdd);
+
+        buttonSubtract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //String id = databaseReference.push().getKey();
-                String id = scannedItem.getText().toString();
+                TOTAL_QUANTITY--;
+                quantity.setText("Quantity: " + TOTAL_QUANTITY);
+            }
+        });
 
-                Inventory inventory = new Inventory(id,0,0);
-
-                databaseReference.child(id).setValue(inventory);
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TOTAL_QUANTITY++;
+                quantity.setText("Quantity: " + TOTAL_QUANTITY);
             }
         });
 
@@ -124,6 +157,45 @@ public class DetectionFragment extends Fragment implements AdapterView.OnItemSel
             @Override
             public void onClick(View view) {
                 takePictureFromCamera();
+            }
+        });
+
+        chooseDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendar = Calendar.getInstance();
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH);
+                dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+                datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        date = ((month + 1) + "/" + dayOfMonth + "/" + year);
+                    }
+                },year,month,dayOfMonth);
+                datePickerDialog.show();
+            }
+        });
+
+        confirmItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //String id = databaseReference.push().getKey();
+                String id = scannedItem.getText().toString();
+                String chosenDate = date;
+                int ACTUALTOTALQUANTITY = TOTAL_QUANTITY;
+
+                if(!TextUtils.isEmpty(id) || !TextUtils.isEmpty((chosenDate))){
+                    Inventory inventory = new Inventory(id,chosenDate,ACTUALTOTALQUANTITY);
+                    databaseReference.child(id).setValue(inventory);
+                    Toast.makeText(getContext(), "Added to database", Toast.LENGTH_SHORT).show();
+                    TOTAL_QUANTITY = 0;
+                    quantity.setText("Quantity: " + TOTAL_QUANTITY);
+                }else{
+                    Toast.makeText(getContext(), "Make sure the name and date are selected", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
