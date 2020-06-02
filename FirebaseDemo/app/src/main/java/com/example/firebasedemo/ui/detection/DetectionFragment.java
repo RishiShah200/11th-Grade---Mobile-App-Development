@@ -186,7 +186,7 @@ public class DetectionFragment extends Fragment implements AdapterView.OnItemSel
                 String chosenDate = date;
                 int ACTUALTOTALQUANTITY = TOTAL_QUANTITY;
 
-                if(!TextUtils.isEmpty(id) || !TextUtils.isEmpty((chosenDate))){
+                if(!TextUtils.isEmpty(id) && !TextUtils.isEmpty((chosenDate))){
                     Inventory inventory = new Inventory(id,chosenDate,ACTUALTOTALQUANTITY);
                     databaseReference.child(id).setValue(inventory);
                     Toast.makeText(getContext(), "Added to database", Toast.LENGTH_SHORT).show();

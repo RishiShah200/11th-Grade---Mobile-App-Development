@@ -29,4 +29,9 @@ public class Inventory {
         return totalQuantity;
     }
 
+    public int setQuantity(int x){
+        totalQuantity = x;
+        return totalQuantity;
+    }
+
 }

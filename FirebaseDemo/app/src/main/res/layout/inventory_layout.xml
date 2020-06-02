@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:fontFamily="@font/oswaldregular"
         android:foregroundGravity="center_vertical|right"
         android:gravity="right|center_vertical"
         android:text="TextView"
@@ -25,6 +26,7 @@
         android:layout_marginTop="4dp"
         android:gravity="left|center_vertical"
         android:text="TextView"
+        android:fontFamily="@font/oswaldregular"
         android:textSize="25sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintHorizontal_bias="0.0"
@@ -49,18 +51,49 @@
         android:id="@+id/productImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintTop_toTopOf="@+id/nameOfProduct"
+        app:layout_constraintBottom_toBottomOf="@+id/removeFromList"
+        app:layout_constraintEnd_toStartOf="@+id/removeFromList"
+        app:layout_constraintTop_toTopOf="@+id/removeFromList"
         app:srcCompat="@android:mipmap/sym_def_app_icon" />
 
     <TextView
         android:id="@+id/totalQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:text="TextView"
+        android:fontFamily="@font/oswaldregular"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/nameOfProduct" />
+
+    <ImageView
+        android:id="@+id/removeFromList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/totalQuantity"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintTop_toTopOf="@+id/totalQuantity"
+        app:srcCompat="@drawable/ic_delete" />
+
+    <ImageView
+        android:id="@+id/buttonAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/totalQuantity"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_add" />
+
+    <ImageView
+        android:id="@+id/buttonSubtract"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonAdd"
+        app:layout_constraintTop_toTopOf="@+id/buttonAdd"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_subtract" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.firebasedemo.LoginActivity;
@@ -91,6 +92,9 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onStart() {
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
