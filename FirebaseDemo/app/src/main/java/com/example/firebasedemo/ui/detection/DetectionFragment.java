@@ -54,8 +54,15 @@ import com.google.api.services.vision.v1.model.SafeSearchAnnotation;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -76,14 +83,17 @@ public class DetectionFragment extends Fragment implements AdapterView.OnItemSel
     Button takePicture;
     ProgressBar imageUploadProgress;
     ImageView imageView;
-    Spinner spinnerVisionAPI;
 
 
     private Feature feature;
     private Bitmap bitmap;
-    private String[] visionAPI = new String[]{"LANDMARK_DETECTION", "LOGO_DETECTION", "SAFE_SEARCH_DETECTION", "IMAGE_PROPERTIES", "LABEL_DETECTION"};
+    //private String[] visionAPI = new String[]{"LANDMARK_DETECTION", "LOGO_DETECTION", "SAFE_SEARCH_DETECTION", "IMAGE_PROPERTIES", "LABEL_DETECTION"};
 
-    private String api = visionAPI[0];
+    //private String[] visionAPI = new String[]{"LABEL_DETECTION"};
+
+    //private String api = visionAPI[0];
+
+    private String api = "LABEL_DETECTION";
 
     String imageName;
     EditText scannedItem;
@@ -105,12 +115,30 @@ public class DetectionFragment extends Fragment implements AdapterView.OnItemSel
     Calendar calendar;
     String date;
 
+    int finalYear;
+    int finalMonth;
+    int finalDayOfMonth;
+    TextView selectedDate;
+
+    Bitmap imageToUpload;
+
+    URL url;
+    URLConnection connection;
+    InputStream stream;
+    BufferedReader reader;
+    InputStreamReader streamReader;
+    String text;        //used for the 5 day forecast
+    String info = "";
+    JSONObject imageData;
+
+    String imageURL;
+
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_detection, container, false);
-
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Foods");
         confirmItem = root.findViewById(R.id.confirmItem);
@@ -121,11 +149,18 @@ public class DetectionFragment extends Fragment implements AdapterView.OnItemSel
         buttonSubtract = root.findViewById(R.id.buttonSubtract);
         buttonAdd = root.findViewById(R.id.buttonAdd);
 
+        selectedDate = root.findViewById(R.id.selectedDate);
+
+
         buttonSubtract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TOTAL_QUANTITY--;
-                quantity.setText("Quantity: " + TOTAL_QUANTITY);
+                if(TOTAL_QUANTITY <= 1){
+                    Toast.makeText(getContext(), "Cannot have fewer than one item in the list!", Toast.LENGTH_SHORT).show();
+                }else{
+                    TOTAL_QUANTITY--;
+                    quantity.setText("Quantity: " + TOTAL_QUANTITY);
+                }
             }
         });
 
@@ -140,18 +175,18 @@ public class DetectionFragment extends Fragment implements AdapterView.OnItemSel
         takePicture = root.findViewById(R.id.takePicture);
         imageUploadProgress = root.findViewById(R.id.imageProgress);
         imageView = root.findViewById(R.id.imageView);
-        spinnerVisionAPI = root.findViewById(R.id.spinnerVisionAPI);
+
 
         scannedItem = root.findViewById(R.id.scannedItem);
 
         feature = new Feature();
-        feature.setType(visionAPI[0]);
+        //feature.setType(visionAPI[0]);
+        feature.setType(api);
         feature.setMaxResults(10);
 
-        spinnerVisionAPI.setOnItemSelectedListener(this);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, visionAPI);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerVisionAPI.setAdapter(dataAdapter);
+        //ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, visionAPI);
+        //dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //spinnerVisionAPI.setAdapter(dataAdapter);
 
         takePicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,7 +206,11 @@ public class DetectionFragment extends Fragment implements AdapterView.OnItemSel
                 datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        finalYear = year;
+                        finalMonth = month + 1;
+                        finalDayOfMonth = dayOfMonth;
                         date = ((month + 1) + "/" + dayOfMonth + "/" + year);
+                        selectedDate.setText(date);
                     }
                 },year,month,dayOfMonth);
                 datePickerDialog.show();
@@ -179,6 +218,7 @@ public class DetectionFragment extends Fragment implements AdapterView.OnItemSel
         });
 
         confirmItem.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("StaticFieldLeak")
             @Override
             public void onClick(View v) {
                 //String id = databaseReference.push().getKey();
@@ -186,14 +226,15 @@ public class DetectionFragment extends Fragment implements AdapterView.OnItemSel
                 String chosenDate = date;
                 int ACTUALTOTALQUANTITY = TOTAL_QUANTITY;
 
-                if(!TextUtils.isEmpty(id) && !TextUtils.isEmpty((chosenDate))){
-                    Inventory inventory = new Inventory(id,chosenDate,ACTUALTOTALQUANTITY);
+
+                if(!TextUtils.isEmpty(id) && !TextUtils.isEmpty(chosenDate) && TOTAL_QUANTITY!= 0){
+                    Inventory inventory = new Inventory(id,chosenDate,ACTUALTOTALQUANTITY,finalMonth,finalDayOfMonth,finalYear);
                     databaseReference.child(id).setValue(inventory);
                     Toast.makeText(getContext(), "Added to database", Toast.LENGTH_SHORT).show();
                     TOTAL_QUANTITY = 0;
                     quantity.setText("Quantity: " + TOTAL_QUANTITY);
                 }else{
-                    Toast.makeText(getContext(), "Make sure the name and date are selected", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Make sure the name and date are selected and that the quantity is above 0", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -231,6 +272,7 @@ public class DetectionFragment extends Fragment implements AdapterView.OnItemSel
                                     Intent data) {
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             bitmap = (Bitmap) data.getExtras().get("data");
+            imageToUpload = bitmap;
             imageView.setImageBitmap(bitmap);
             callCloudVision(bitmap, feature);
         }

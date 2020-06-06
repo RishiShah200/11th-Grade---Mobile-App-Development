@@ -1,23 +1,25 @@
 package com.example.firebasedemo.ui.notifications;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
+import com.example.firebasedemo.AlertReceiver;
 import com.example.firebasedemo.R;
-import com.example.firebasedemo.ui.detection.DetectionFragment;
 import com.example.firebasedemo.ui.detection.Inventory;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,15 +27,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
-public class NotificationsFragment extends Fragment {
+public class NotificationsFragment extends Fragment{
 
     ListView listView;
 
     List<Inventory> inventoryList;
 
     DatabaseReference databaseReference;
+
+    FloatingActionButton shareButton;
+
+    String shareMessage = "";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -42,16 +50,51 @@ public class NotificationsFragment extends Fragment {
 
         listView = root.findViewById(R.id.inventoryList);
 
+        databaseReference = FirebaseDatabase.getInstance().getReference("Foods");
+
         inventoryList = new ArrayList<>();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Foods");
+        shareButton = root.findViewById(R.id.shareButton);
+
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share via...");
+                startActivity(Intent.createChooser(intent, "Share"));
+            }
+        });
+
+
 
         return root;
     }
 
+    private void startAlarm(Calendar c){
+        try{
+            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(getContext(), AlertReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),1,intent,0);
+
+            if (c.before(Calendar.getInstance())) {
+                c.add(Calendar.DATE, 1);
+            }
+
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pendingIntent);
+            Log.d("REACHED",c.getTimeInMillis()+"");
+        }catch (Exception e){
+            //e.printStackTrace();
+        }
+    }
+
+
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
 
 
             databaseReference.addValueEventListener(new ValueEventListener() {
@@ -59,10 +102,27 @@ public class NotificationsFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                     inventoryList.clear();  //might be this line
+                    shareMessage = "";
 
                         for(DataSnapshot inventorySnapshot : dataSnapshot.getChildren()) {
 
                             Inventory inventory = inventorySnapshot.getValue(Inventory.class);
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set(Calendar.YEAR,inventory.getYear());
+                            calendar.set(Calendar.MONTH,inventory.getMonth());
+                            calendar.set(Calendar.DAY_OF_MONTH,inventory.getDayOfMonth());
+                            calendar.set(Calendar.HOUR_OF_DAY,20);
+                            calendar.set(Calendar.MINUTE,19);
+                            Log.d("TESTING",calendar.get(Calendar.MINUTE)+"");
+                            //long timeUntil = calendar.getTimeInMillis() - System.currentTimeMillis();
+                            //Log.d("TAG",calendar.getTimeInMillis()+"");
+                            try{
+                                startAlarm(calendar);
+                            }catch(Exception e){
+                                //e.printStackTrace();
+                            }
+
+                            shareMessage += inventory.toString() + "\n";
                             inventoryList.add(inventory);
 
                         }
@@ -71,7 +131,7 @@ public class NotificationsFragment extends Fragment {
                             InventoryList adapter = new InventoryList(getContext(),R.layout.inventory_layout,inventoryList); //getContext() is null
                             listView.setAdapter(adapter);
                         }catch (Exception e){
-                            e.printStackTrace();
+                            //e.printStackTrace();
                         }
 
 
@@ -85,37 +145,5 @@ public class NotificationsFragment extends Fragment {
 
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//
-//        try{
-//            databaseReference.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                    inventoryList.clear();
-//
-//                    for(DataSnapshot inventorySnapshot : dataSnapshot.getChildren()){
-//                        Inventory inventory = inventorySnapshot.getValue(Inventory.class);
-//
-//                        inventoryList.add(inventory);
-//                    }
-//
-//                    InventoryList adapter = new InventoryList(getContext(),R.layout.inventory_layout,inventoryList);
-//                    listView.setAdapter(adapter);
-//
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                }
-//            });
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-//
-//
-//    }
+
 }

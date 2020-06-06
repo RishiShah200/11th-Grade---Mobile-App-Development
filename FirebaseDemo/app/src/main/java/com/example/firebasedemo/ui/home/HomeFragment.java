@@ -93,8 +93,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
