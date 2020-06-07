@@ -49,8 +49,8 @@
 
     <ImageView
         android:id="@+id/productImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="106dp"
+        android:layout_height="91dp"
         app:layout_constraintBottom_toBottomOf="@+id/removeFromList"
         app:layout_constraintEnd_toStartOf="@+id/removeFromList"
         app:layout_constraintTop_toTopOf="@+id/removeFromList"

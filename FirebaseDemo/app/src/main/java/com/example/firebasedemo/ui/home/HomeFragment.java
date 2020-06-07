@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.firebasedemo.LoginActivity;
@@ -40,7 +39,6 @@ public class HomeFragment extends Fragment {
     GoogleApiClient mGoogleApiClient;
 
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -60,8 +58,8 @@ public class HomeFragment extends Fragment {
                         new ResultCallback<Status>() {
                             @Override
                             public void onResult(Status status) {
-                                Toast.makeText(getActivity().getApplicationContext(),"Logged Out",Toast.LENGTH_SHORT).show();
-                                Intent i=new Intent(getActivity().getApplicationContext(), LoginActivity.class);
+                                Toast.makeText(getActivity().getApplicationContext(), "Logged Out", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
                                 startActivity(i);
                             }
                         });
@@ -69,7 +67,7 @@ public class HomeFragment extends Fragment {
 
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(getContext(), "Successfully Logged Out!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getContext(),LoginActivity.class));
+                startActivity(new Intent(getContext(), LoginActivity.class));
                 getActivity().finish();
             }
         });
@@ -80,10 +78,9 @@ public class HomeFragment extends Fragment {
         userEmail.setText(email);
 
 
-
         HashMap<String, Object> map = new HashMap<>();
-        map.put("Name",name);
-        map.put("Email",email);
+        map.put("Name", name);
+        map.put("Email", email);
 
         FirebaseDatabase.getInstance().getReference().child("User").updateChildren(map);
 
@@ -102,7 +99,6 @@ public class HomeFragment extends Fragment {
         mGoogleApiClient.connect();
         super.onStart();
     }
-
 
 
 }

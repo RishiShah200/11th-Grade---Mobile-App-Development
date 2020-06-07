@@ -2,18 +2,13 @@ package com.example.firebasedemo.ui.notifications;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,22 +23,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.Console;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class InventoryList extends ArrayAdapter<Inventory> {
 
@@ -66,11 +55,11 @@ public class InventoryList extends ArrayAdapter<Inventory> {
 
     public InventoryList(@NonNull Context context, int resource, @NonNull List<Inventory> objects) {
         super(context, resource, objects);
-        try{
+        try {
             list = objects;
             parentContext = context;
             xmlResource = resource;
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -81,8 +70,8 @@ public class InventoryList extends ArrayAdapter<Inventory> {
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        LayoutInflater layoutInflater = (LayoutInflater)parentContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);  //sets layout on the screeen
-        View view = layoutInflater.inflate(R.layout.inventory_layout,null,true);
+        LayoutInflater layoutInflater = (LayoutInflater) parentContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);  //sets layout on the screeen
+        View view = layoutInflater.inflate(R.layout.inventory_layout, null, true);
 
         TextView nameOfProduct = view.findViewById(R.id.nameOfProduct);
         TextView expirationDate = view.findViewById(R.id.expirationDate);
@@ -96,12 +85,12 @@ public class InventoryList extends ArrayAdapter<Inventory> {
 
         final Inventory inventory = list.get(position);
 
-        new AsyncTask<Void,Void,Void>(){
+        new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
                 try {        //for the 5 day forecast
-                    Log.d("SEARCHING","SEARCHING");
-                    url = new URL("https://www.googleapis.com/customsearch/v1?q=%22" + inventory.getName() + "%22&key=AIzaSyDifREwA82Bv_RM7LkDEFKjK7INwrrwL9Y&num=5&searchType=image&cx=008840029476306506173:4zyg9ds1eoq");   //5 day
+                    Log.d("SEARCHING", "SEARCHING");
+                    url = new URL("https://www.googleapis.com/customsearch/v1?q=%22" + inventory.getName() + "%22&key=AIzaSyDifREwA82Bv_RM7LkDEFKjK7INwrrwL9Y&num=5&searchType=image&cx=008840029476306506173:4zyg9ds1eoq&imgColorType=color&imgType=photo");   //5 day
                     connection = url.openConnection();
                     stream = connection.getInputStream();
                     streamReader = new InputStreamReader(stream);
@@ -111,8 +100,8 @@ public class InventoryList extends ArrayAdapter<Inventory> {
                         info += text;
                     }
                     imageData = new JSONObject(info);
-                    Log.d("REACHED",imageData+"");
-                }catch(Exception e){
+                    Log.d("REACHED", imageData + "");
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 return null;
@@ -121,11 +110,11 @@ public class InventoryList extends ArrayAdapter<Inventory> {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                try{
+                try {
                     actualURL = imageData.getJSONArray("items").getJSONObject(0).getJSONObject("image").getString("thumbnailLink");
-                    Log.d("REALURL",actualURL);
+                    Log.d("REALURL", actualURL);
                     Picasso.get().load(actualURL).into(productImage);
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -149,9 +138,9 @@ public class InventoryList extends ArrayAdapter<Inventory> {
         buttonSubtract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(inventory.getTotalQuantity() <= 1){
+                if (inventory.getTotalQuantity() <= 1) {
                     Toast.makeText(parentContext, "Cannot have fewer than one item in the list!", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     inventory.setQuantity(inventory.getTotalQuantity() - 1);
                     databaseReference.child(list.get(position).getName()).setValue(inventory);
                 }
@@ -161,7 +150,6 @@ public class InventoryList extends ArrayAdapter<Inventory> {
         databaseReference = FirebaseDatabase.getInstance().getReference("Foods");
 
 
-
         removeFromList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,7 +157,7 @@ public class InventoryList extends ArrayAdapter<Inventory> {
                 databaseReference.orderByChild("name").equalTo(list.get(position).getName()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot child: dataSnapshot.getChildren()){
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
                             child.getRef().setValue(null);
                         }
                     }

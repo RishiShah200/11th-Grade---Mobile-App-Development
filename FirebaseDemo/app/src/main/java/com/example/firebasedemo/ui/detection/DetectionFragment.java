@@ -233,6 +233,8 @@ public class DetectionFragment extends Fragment implements AdapterView.OnItemSel
                     Toast.makeText(getContext(), "Added to database", Toast.LENGTH_SHORT).show();
                     TOTAL_QUANTITY = 0;
                     quantity.setText("Quantity: " + TOTAL_QUANTITY);
+
+                    selectedDate.setText("");
                 }else{
                     Toast.makeText(getContext(), "Make sure the name and date are selected and that the quantity is above 0", Toast.LENGTH_SHORT).show();
                 }
