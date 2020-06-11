@@ -1,22 +1,23 @@
 public class Lambda{
     public Lambda(){
-        firstLambda = () -> System.out.println("First Lambda");
+        MyLambda firstLambda = () -> System.out.println("First Lambda"); //with one line you dont need return statement or brackets
         
-        doubleNumberFunction = (int a) -> a*2;  //with one line you dont need return statement or brackets
+        MyAdd addFunction = (int a, int b) -> a+b;
 
-        addFunction = (int a, int b) -> a+b;
+        addFunction.add(1, 2);
 
-        safeDivideFcuntion = (int a, int b) -> {
-            if(b == 0){
-                return 0;
-            }
-            return a/b;
-        };
-
-        stringLengthCountFunction = (String s) -> s.length();
+        firstLambda.foo();
     }
 
     public static void main(String[] args){
         Lambda app = new Lambda();
     }
+}
+
+interface MyLambda{     //tells what the return type is to the java compiler
+    void foo();
+}
+
+interface MyAdd{
+    int add(int a, int b);
 }
